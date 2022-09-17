@@ -239,3 +239,5 @@
 
 /// Checks if a number is an integer, or a float
 #define IS_INT(x) (x == round(x))
+
+#define MAYBE prob(50)
