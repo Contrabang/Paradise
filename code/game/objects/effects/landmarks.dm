@@ -472,7 +472,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/awaystart) //Without this away mission
 	new /obj/item/clothing/gloves/color/white(src.loc)
 	new /obj/item/clothing/shoes/white(src.loc)
 	new /obj/item/clothing/under/scratch(src.loc)
-	if(prob(30))
+	if(MAYBE)
 		new /obj/item/clothing/head/cueball(src.loc)
 	return INITIALIZE_HINT_QDEL
 
@@ -533,7 +533,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/awaystart) //Without this away mission
 /obj/effect/landmark/costume/imperium_monk/Initialize(mapload)
 	. = ..()
 	new /obj/item/clothing/suit/imperium_monk(src.loc)
-	if(prob(25))
+	if(MAYBE)
 		new /obj/item/clothing/mask/gas/cyborg(src.loc)
 	return INITIALIZE_HINT_QDEL
 

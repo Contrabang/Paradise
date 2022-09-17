@@ -750,7 +750,7 @@
 			vend_ready = TRUE
 			return
 		if(coin.string_attached)
-			if(prob(50))
+			if(MAYBE)
 				to_chat(user, "<span class='notice'>You successfully pull the coin out before [src] could swallow it.</span>")
 			else
 				to_chat(user, "<span class='notice'>You weren't able to pull the coin out fast enough, the machine ate it, string and all.</span>")
@@ -811,7 +811,7 @@
 		src.seconds_electrified--
 
 	//Pitch to the people!  Really sell it!
-	if(((last_slogan + src.slogan_delay) <= world.time) && (LAZYLEN(slogan_list)) && (!shut_up) && prob(5))
+	if(((last_slogan + src.slogan_delay) <= world.time) && (LAZYLEN(slogan_list)) && (!shut_up) && MAYBE)
 		var/slogan = pick(src.slogan_list)
 		speak(slogan)
 		last_slogan = world.time
@@ -861,7 +861,7 @@
 					continue
 				R.amount--
 				// busting open a vendor will destroy some of the contents
-				if(found_anything && prob(80))
+				if(found_anything && MAYBE)
 					continue
 
 				var/obj/O = new dump_path(loc)

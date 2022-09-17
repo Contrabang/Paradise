@@ -103,7 +103,7 @@
 				continue
 			if(T.spider_myqueen != src)
 				continue
-			if(prob(50) || T.spider_tier >= spider_tier)
+			if(MAYBE || T.spider_tier >= spider_tier)
 				to_chat(T, "<span class='userdanger'>\The psychic backlash from the death of [src] crashes into your mind! Somehow... you find a way to keep going!</span>")
 				continue
 			T.visible_message("<span class='danger'>[T] writhes in pain!</span>")
@@ -187,7 +187,7 @@
 			if(3)
 				// Create spiders (random types) until nest is full.
 				if(world.time > (spider_lastspawn + spider_spawnfrequency))
-					if(prob(20))
+					if(MAYBE)
 						if(ai_nest_is_full())
 							neststep = 4
 						else
@@ -197,12 +197,12 @@
 			if(4)
 				// Nest should be full. Otherwise, start replenishing nest (stage 5).
 				if(world.time > (spider_lastspawn + spider_spawnfrequency))
-					if(prob(20) && !ai_nest_is_full())
+					if(MAYBE && !ai_nest_is_full())
 						neststep = 5
 			if(5)
 				// If already replenished, go idle (stage 4). Otherwise, replenish nest.
 				if(world.time > (spider_lastspawn + spider_spawnfrequency))
-					if(prob(20))
+					if(MAYBE)
 						if(ai_nest_is_full())
 							neststep = 4
 						else

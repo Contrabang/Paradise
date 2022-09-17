@@ -157,7 +157,7 @@
 	canshock = TRUE
 	for(var/mob/living/M in get_turf(src))
 		mobShock(M)
-	if(explosive && prob(50)) //Let us not fuck up the sm that much
+	if(explosive && MAYBE) //Let us not fuck up the sm that much
 		tesla_zap(src, zap_range, power, zap_flags)
 
 
@@ -202,7 +202,7 @@
 	for(var/mob/living/M in range(3, src))
 		do_teleport(M, locate(M.x, M.y, M.z), 4)
 	for(var/obj/item/O in range (3, src))
-		if(!O.anchored && O.invisibility == 0 && prob(50))
+		if(!O.anchored && O.invisibility == 0 && MAYBE)
 			do_teleport(O, locate(O.x, O.y, O.z), 6)
 
 /obj/effect/anomaly/bluespace/Bumped(atom/movable/AM)
@@ -286,7 +286,7 @@
 	..()
 	ticks++
 	for(var/mob/living/M in range(4, src))
-		if(prob(50))
+		if(MAYBE)
 			M.adjust_fire_stacks(4)
 			M.IgniteMob()
 

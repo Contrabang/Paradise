@@ -33,12 +33,12 @@
 		while(cur_turf != target_turf)
 
 			if(detouring) //randomly snake around a bit
-				if(prob(20))
+				if(MAYBE)
 					detouring = 0
 					cur_dir = get_dir(cur_turf, target_turf)
-			else if(prob(20))
+			else if(MAYBE)
 				detouring = 1
-				if(prob(50))
+				if(MAYBE)
 					cur_dir = turn(cur_dir, 45)
 				else
 					cur_dir = turn(cur_dir, -45)

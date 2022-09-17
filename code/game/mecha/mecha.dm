@@ -431,7 +431,7 @@
 /obj/mecha/proc/check_for_internal_damage(list/possible_int_damage, ignore_threshold=null)
 	if(!islist(possible_int_damage) || isemptylist(possible_int_damage))
 		return
-	if(prob(20))
+	if(MAYBE)
 		if(ignore_threshold || obj_integrity*100/max_integrity < internal_damage_threshold)
 			for(var/T in possible_int_damage)
 				if(internal_damage & T)
@@ -439,7 +439,7 @@
 			var/int_dam_flag = safepick(possible_int_damage)
 			if(int_dam_flag)
 				setInternalDamage(int_dam_flag)
-	if(prob(5))
+	if(MAYBE)
 		if(ignore_threshold || obj_integrity*100/max_integrity < internal_damage_threshold)
 			var/obj/item/mecha_parts/mecha_equipment/ME = safepick(equipment)
 			if(ME)
@@ -490,7 +490,7 @@
 				check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST))
 			else
 				check_for_internal_damage(list(MECHA_INT_FIRE,MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST,MECHA_INT_SHORT_CIRCUIT))
-		if((. >= 5 || prob(33)) && !(. == 1 && leg_overload_mode)) //If it takes 1 damage and leg_overload_mode is true, do not say TAKING DAMAGE! to the user several times a second.
+		if((. >= 5 || MAYBE) && !(. == 1 && leg_overload_mode)) //If it takes 1 damage and leg_overload_mode is true, do not say TAKING DAMAGE! to the user several times a second.
 			occupant_message("<span class='userdanger'>Taking damage!</span>")
 		log_message("Took [damage_amount] points of damage. Damage type: [damage_type]")
 
@@ -1400,7 +1400,7 @@
 		return
 
 	if(internal_damage & MECHA_INT_FIRE)
-		if(!(internal_damage & MECHA_INT_TEMP_CONTROL) && prob(5))
+		if(!(internal_damage & MECHA_INT_TEMP_CONTROL) && MAYBE)
 			clearInternalDamage(MECHA_INT_FIRE)
 		if(internal_tank)
 			var/datum/gas_mixture/int_tank_air = internal_tank.return_air()
@@ -1506,7 +1506,7 @@
 			occupant = null
 		var/obj/structure/mecha_wreckage/WR = new wreckage(loc, AI)
 		for(var/obj/item/mecha_parts/mecha_equipment/E in equipment)
-			if(E.salvageable && prob(30))
+			if(E.salvageable && MAYBE)
 				WR.crowbar_salvage += E
 				E.detach(WR) //detaches from src into WR
 				E.equip_ready = 1

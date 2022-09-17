@@ -701,7 +701,7 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe/cable_restrain
 	use(1)
 
 	if(C.shock(user, 50))
-		if(prob(50)) //fail
+		if(MAYBE) //fail
 			new /obj/item/stack/cable_coil(get_turf(C), 1, paramcolor = C.color)
 			C.deconstruct()
 
@@ -766,7 +766,7 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe/cable_restrain
 			use(1)
 
 			if(NC.shock(user, 50))
-				if(prob(50)) //fail
+				if(MAYBE) //fail
 					NC.deconstruct()
 			return
 
@@ -812,7 +812,7 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe/cable_restrain
 		use(1)
 
 		if(C.shock(user, 50))
-			if(prob(50)) //fail
+			if(MAYBE) //fail
 				C.deconstruct()
 				return
 

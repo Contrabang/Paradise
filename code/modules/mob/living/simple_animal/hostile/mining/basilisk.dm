@@ -84,8 +84,8 @@
 
 /mob/living/simple_animal/hostile/asteroid/basilisk/watcher/random/Initialize(mapload)
 	. = ..()
-	if(prob(1))
-		if(prob(75))
+	if(MAYBE)
+		if(MAYBE)
 			new /mob/living/simple_animal/hostile/asteroid/basilisk/watcher/magmawing(loc)
 		else
 			new /mob/living/simple_animal/hostile/asteroid/basilisk/watcher/icewing(loc)

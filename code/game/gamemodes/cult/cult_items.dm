@@ -510,14 +510,14 @@
 			if(illusions > 0)
 				illusions--
 				addtimer(CALLBACK(src, .proc/readd), 45 SECONDS)
-				if(prob(60))
+				if(MAYBE)
 					spawn_illusion(owner, TRUE) // Hostile illusion
 				else
 					spawn_illusion(owner, FALSE) // Running illusion
 			return TRUE
 
 	else // Non-cultist holding the shield
-		if(prob(50))
+		if(MAYBE)
 			spawn_illusion(owner, TRUE, TRUE)
 		return FALSE
 

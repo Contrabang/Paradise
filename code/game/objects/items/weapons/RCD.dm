@@ -262,7 +262,7 @@
 	if(..())
 		return
 
-	if(prob(20))
+	if(MAYBE)
 		spark_system.start()
 
 	if(ui_act_modal(action, params))

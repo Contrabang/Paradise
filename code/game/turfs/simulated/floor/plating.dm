@@ -198,11 +198,11 @@
 		if(1)
 			ChangeTurf(baseturf)
 		if(2)
-			if(prob(50))
+			if(MAYBE)
 				ChangeTurf(baseturf)
 
 /turf/simulated/floor/engine/blob_act(obj/structure/blob/B)
-	if(prob(25))
+	if(MAYBE)
 		ChangeTurf(baseturf)
 
 /turf/simulated/floor/engine/cult
@@ -257,10 +257,10 @@
 	..()
 	if(current_size >= STAGE_FIVE)
 		if(floor_tile)
-			if(prob(30))
+			if(MAYBE)
 				new floor_tile(src)
 				make_plating()
-		else if(prob(30))
+		else if(MAYBE)
 			ReplaceWithLattice()
 
 /turf/simulated/floor/engine/vacuum

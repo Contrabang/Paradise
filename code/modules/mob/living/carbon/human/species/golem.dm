@@ -130,7 +130,7 @@
 			to_chat(H, "<span class='notice'>You feel more stable.</span>")
 			boom_warning = FALSE
 
-	if(H.bodytemperature > 850 && H.on_fire && prob(25))
+	if(H.bodytemperature > 850 && H.on_fire && MAYBE)
 		explosion(get_turf(H), 1, 2, 4, flame_range = 5)
 		msg_admin_attack("Plasma Golem ([H.name]) exploded with radius 1, 2, 4 (flame_range: 5) at ([H.x],[H.y],[H.z]). User Ckey: [key_name_admin(H)]", ATKLOG_FEW)
 		log_game("Plasma Golem ([H.name]) exploded with radius 1, 2, 4 (flame_range: 5) at ([H.x],[H.y],[H.z]). User Ckey: [key_name_admin(H)]", ATKLOG_FEW)

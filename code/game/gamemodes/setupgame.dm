@@ -16,9 +16,9 @@
 
 /proc/setupgenetics()
 
-	if(prob(50))
+	if(MAYBE)
 		GLOB.blockadd = rand(-300,300)
-	if(prob(75))
+	if(MAYBE)
 		GLOB.diffmut = rand(0,20)
 
 

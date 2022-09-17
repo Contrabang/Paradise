@@ -94,7 +94,7 @@ SUBSYSTEM_DEF(jobs)
 
 			// 50/50 chance of getting optional objectives.
 			for(var/objectiveType in job.optional_objectives)
-				if(prob(50))
+				if(MAYBE)
 					new objectiveType(player.mind)
 
 			unassigned -= player

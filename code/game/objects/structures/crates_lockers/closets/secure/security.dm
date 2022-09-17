@@ -5,7 +5,7 @@
 	open_door_sprite = "cap_door"
 
 /obj/structure/closet/secure_closet/captains/populate_contents()
-	if(prob(50))
+	if(MAYBE)
 		new /obj/item/storage/backpack/captain(src)
 	else
 		new /obj/item/storage/backpack/satchel_cap(src)
@@ -54,7 +54,7 @@
 	open_door_sprite = "hos_door"
 
 /obj/structure/closet/secure_closet/hos/populate_contents()
-	if(prob(50))
+	if(MAYBE)
 		new /obj/item/storage/backpack/security(src)
 	else
 		new /obj/item/storage/backpack/satchel_sec(src)
@@ -82,7 +82,7 @@
 	open_door_sprite = "sec_door"
 
 /obj/structure/closet/secure_closet/warden/populate_contents()
-	if(prob(50))
+	if(MAYBE)
 		new /obj/item/storage/backpack/security(src)
 	else
 		new /obj/item/storage/backpack/satchel_sec(src)
@@ -114,7 +114,7 @@
 	open_door_sprite = "sec_door"
 
 /obj/structure/closet/secure_closet/security/populate_contents()
-	if(prob(50))
+	if(MAYBE)
 		new /obj/item/storage/backpack/security(src)
 	else
 		new /obj/item/storage/backpack/satchel_sec(src)

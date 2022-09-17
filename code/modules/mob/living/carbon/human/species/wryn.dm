@@ -137,7 +137,7 @@
 		playsound(user.loc, 'sound/weapons/bladeslice.ogg', 50, 0)
 		add_attack_logs(user, target, "Stung by Wryn Stinger - [dam] Brute damage to [organ].")
 		if(target.restrained())			//Apply tiny BURN damage if target is restrained
-			if(prob(50))
+			if(MAYBE)
 				user.apply_damage(2, BURN, target)
 				to_chat(target, "<span class='danger'>You feel a little burnt! Yowch!</span>")
 				user.visible_message("<span class='danger'>[user] is looking a little burnt!</span>")

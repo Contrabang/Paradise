@@ -411,12 +411,12 @@
 		G.cell.charge = 0
 		G.update_icon()
 
-	if(prob(50))
+	if(MAYBE)
 		new /obj/item/robot_parts/l_leg(Tsec)
-		if(prob(25))
+		if(MAYBE)
 			new /obj/item/robot_parts/r_leg(Tsec)
-	if(prob(25))//50% chance for a helmet OR vest
-		if(prob(50))
+	if(MAYBE)//50% chance for a helmet OR vest
+		if(MAYBE)
 			new /obj/item/clothing/head/helmet(Tsec)
 		else
 			if(!lasercolor)
@@ -479,7 +479,7 @@
 
 /mob/living/simple_animal/bot/ed209/emp_act(severity)
 
-	if(severity==2 && prob(70))
+	if(severity==2 && MAYBE)
 		..(severity-1)
 	else
 		var/obj/effect/overlay/pulse2 = new/obj/effect/overlay ( loc )
@@ -496,11 +496,11 @@
 				continue
 			targets += C
 		if(targets.len)
-			if(prob(50))
+			if(MAYBE)
 				var/mob/toshoot = pick(targets)
 				if(toshoot)
 					targets-=toshoot
-					if(prob(50) && emagged < 2)
+					if(MAYBE && emagged < 2)
 						emagged = 2
 						set_weapon()
 						shootAt(toshoot)
@@ -508,7 +508,7 @@
 						set_weapon()
 					else
 						shootAt(toshoot)
-			else if(prob(50))
+			else if(MAYBE)
 				if(targets.len)
 					var/mob/toarrest = pick(targets)
 					if(toarrest)

@@ -22,7 +22,7 @@
 	var/possible_dirs = 4
 
 /obj/structure/chair/narsie_act()
-	if(prob(20))
+	if(MAYBE)
 		var/obj/structure/chair/wood/W = new/obj/structure/chair/wood(get_turf(src))
 		W.setDir(dir)
 		qdel(src)
@@ -545,7 +545,7 @@
 		smash(user)
 
 /obj/item/chair/stool/attack(mob/M as mob, mob/user as mob)
-	if(prob(5) && istype(M,/mob/living))
+	if(MAYBE && istype(M,/mob/living))
 		user.visible_message("<span class='danger'>[user] breaks [src] over [M]'s back!.</span>")
 		user.unEquip(src)
 		var/obj/item/stack/sheet/metal/m = new/obj/item/stack/sheet/metal

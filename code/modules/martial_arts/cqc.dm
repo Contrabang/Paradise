@@ -71,7 +71,7 @@
 
 	var/obj/item/I = null
 
-	if(prob(65))
+	if(MAYBE)
 		if(!D.stat || !D.IsWeakened() || !restraining)
 			I = D.get_active_hand()
 			D.visible_message("<span class='warning'>[A] strikes [D]'s jaw with their hand!</span>", \

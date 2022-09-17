@@ -106,14 +106,14 @@
 	..()
 	switch(stage)
 		if(2)
-			if(prob(2))
+			if(MAYBE)
 				to_chat(affected_mob, "<span class='notice'>Your [pick("back", "arm", "leg", "elbow", "head")] itches.</span>")
 		if(3)
-			if(prob(4))
+			if(MAYBE)
 				to_chat(affected_mob, "<span class='danger'>You feel a stabbing pain in your head.</span>")
 				affected_mob.AdjustConfused(20 SECONDS)
 		if(4)
-			if(prob(3))
+			if(MAYBE)
 				affected_mob.say(pick("Eeek, ook ook!", "Eee-eeek!", "Eeee!", "Ungh, ungh."))
 
 
@@ -140,13 +140,13 @@
 	..()
 	switch(stage)
 		if(3)
-			if(prob(8))
+			if(MAYBE)
 				affected_mob.say(pick("Beep, boop", "beep, beep!", "Boop...bop"))
-			if(prob(4))
+			if(MAYBE)
 				to_chat(affected_mob, "<span class='danger'>You feel a stabbing pain in your head.</span>")
 				affected_mob.Paralyse(4 SECONDS)
 		if(4)
-			if(prob(20))
+			if(MAYBE)
 				affected_mob.say(pick("beep, beep!", "Boop bop boop beep.", "kkkiiiill mmme", "I wwwaaannntt tttoo dddiiieeee..."))
 
 
@@ -172,11 +172,11 @@
 	..()
 	switch(stage)
 		if(3)
-			if(prob(4))
+			if(MAYBE)
 				to_chat(affected_mob, "<span class='danger'>You feel a stabbing pain in your head.</span>")
 				affected_mob.Paralyse(4 SECONDS)
 		if(4)
-			if(prob(20))
+			if(MAYBE)
 				affected_mob.say(pick("You look delicious.", "Going to... devour you...", "Hsssshhhhh!"))
 
 
@@ -228,10 +228,10 @@
 	..()
 	switch(stage)
 		if(3)
-			if(prob(8))
+			if(MAYBE)
 				affected_mob.say(pick("YAP", "Woof!"))
 		if(4)
-			if(prob(20))
+			if(MAYBE)
 				affected_mob.say(pick("Bark!", "AUUUUUU"))
 
 /datum/disease/transformation/morph

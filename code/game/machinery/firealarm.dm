@@ -55,7 +55,7 @@ FIRE ALARM
 	if(stat & NOPOWER)
 		icon_state = "firealarm_off"
 		return
-	
+
 	var/area/area = get_area(src)
 	if(area.fire)
 		icon_state = "firealarm_alarming"
@@ -199,7 +199,7 @@ FIRE ALARM
 	. = ..()
 	if(.) //damage received
 		if(obj_integrity > 0 && !(stat & BROKEN) && buildstage != 0)
-			if(prob(33))
+			if(MAYBE)
 				alarm()
 
 /obj/machinery/firealarm/singularity_pull(S, current_size)

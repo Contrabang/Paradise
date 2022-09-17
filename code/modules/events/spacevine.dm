@@ -129,12 +129,12 @@
 		ChangeTurf(baseturf)
 
 /turf/simulated/floor/vines/narsie_act()
-	if(prob(20))
+	if(MAYBE)
 		ChangeTurf(baseturf) //nar sie eats this shit
 
 /turf/simulated/floor/vines/singularity_pull(S, current_size)
 	if(current_size >= STAGE_FIVE)
-		if(prob(50))
+		if(MAYBE)
 			ChangeTurf(baseturf)
 
 /turf/simulated/floor/vines/ChangeTurf(turf/simulated/floor/T, defer_change = FALSE, keep_icon = TRUE, ignore_air = FALSE, copy_existing_baseturf = TRUE)
@@ -339,7 +339,7 @@
 		new /obj/structure/alien/resin/flower_bud_enemy(get_turf(holder))
 
 /datum/spacevine_mutation/flowering/on_cross(obj/structure/spacevine/holder, mob/living/crosser)
-	if(prob(25))
+	if(MAYBE)
 		holder.entangle(crosser)
 
 
@@ -467,7 +467,7 @@
 	for(var/datum/spacevine_mutation/SM in mutations)
 		override += SM.on_chem(src, R)
 	if(!override && istype(R, /datum/reagent/glyphosate))
-		if(prob(50))
+		if(MAYBE)
 			wither()
 
 /obj/structure/spacevine/proc/eat(mob/eater)
@@ -475,7 +475,7 @@
 	for(var/datum/spacevine_mutation/SM in mutations)
 		override += SM.on_eat(src, eater)
 	if(!override)
-		if(prob(10))
+		if(MAYBE)
 			eater.say("Nom")
 		wither()
 
@@ -613,12 +613,12 @@
 		for(var/datum/spacevine_mutation/SM in SV.mutations)
 			SM.process_mutation(SV)
 		if(SV.energy < 2) //If tile isn't fully grown
-			if(prob(20))
+			if(MAYBE)
 				SV.grow()
 		else //If tile is fully grown
 			SV.entangle_mob()
 
-		//if(prob(25))
+		//if(MAYBE)
 		SV.spread()
 		if(i >= length)
 			break
@@ -638,7 +638,7 @@
 		SM.on_grow(src)
 
 /obj/structure/spacevine/proc/entangle_mob()
-	if(!has_buckled_mobs() && prob(25))
+	if(!has_buckled_mobs() && MAYBE)
 		for(var/mob/living/V in loc)
 			entangle(V)
 			if(has_buckled_mobs())

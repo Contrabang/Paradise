@@ -162,7 +162,7 @@
 	var/block_dir = get_dir(get_step(loc, dir), loc)
 	if(proj_dir != block_dir) // Back/side shots may pass
 		return
-	if(prob(40))
+	if(MAYBE)
 		return FALSE // Blocked
 
 /obj/structure/table/CheckExit(atom/movable/O, turf/target)

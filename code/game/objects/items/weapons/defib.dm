@@ -373,7 +373,7 @@
 			H.KnockDown(10 SECONDS)
 			playsound(get_turf(src), 'sound/machines/defib_zap.ogg', 50, 1, -1)
 			H.emote("gasp")
-			if((defib.combat && defib.heart_attack) || prob(10) && (defib.combat)) // If the victim is not having a heart attack, and a 10% chance passes, or the defib has heart attack variable to TRUE while being a combat defib, or if another 10% chance passes with combat being TRUE
+			if((defib.combat && defib.heart_attack) || MAYBE && (defib.combat)) // If the victim is not having a heart attack, and a 10% chance passes, or the defib has heart attack variable to TRUE while being a combat defib, or if another 10% chance passes with combat being TRUE
 				H.set_heartattack(TRUE)
 			SEND_SIGNAL(H, COMSIG_LIVING_MINOR_SHOCK, 100)
 			add_attack_logs(user, M, "Stunned with [src]")
@@ -565,7 +565,7 @@
 					"<span class='userdanger'>[user] has touched [H.name] with [src]!</span>")
 			H.adjustStaminaLoss(50)
 			H.Weaken(10 SECONDS)
-			if(!H.undergoing_cardiac_arrest() && prob(10)) // Your heart explodes.
+			if(!H.undergoing_cardiac_arrest() && MAYBE) // Your heart explodes.
 				H.set_heartattack(TRUE)
 			SEND_SIGNAL(H, COMSIG_LIVING_MINOR_SHOCK, 100)
 			playsound(get_turf(src), 'sound/machines/defib_zap.ogg', 50, 1, -1)

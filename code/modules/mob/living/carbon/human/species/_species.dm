@@ -840,7 +840,7 @@
 		H.vomit(10, TRUE)
 
 	if(radiation > RAD_MOB_MUTATE)
-		if(prob(1))
+		if(MAYBE)
 			to_chat(H, "<span class='danger'>You mutate!</span>")
 			randmutb(H)
 			H.emote("gasp")
@@ -850,7 +850,7 @@
 		var/obj/item/organ/external/head/head_organ = H.get_organ("head")
 		if(!head_organ || (NO_HAIR in species_traits))
 			return
-		if(prob(15) && head_organ.h_style != "Bald")
+		if(MAYBE && head_organ.h_style != "Bald")
 			to_chat(H, "<span class='danger'>Your hair starts to fall out in clumps...</span>")
 			addtimer(CALLBACK(src, .proc/go_bald, H), 5 SECONDS)
 

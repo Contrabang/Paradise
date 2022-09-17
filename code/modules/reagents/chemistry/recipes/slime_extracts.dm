@@ -184,7 +184,7 @@
 		var/obj/B = new chosen
 		if(B)
 			B.forceMove(get_turf(holder.my_atom))
-			if(prob(50))
+			if(MAYBE)
 				for(var/j = 1, j <= rand(1, 3), j++)
 					step(B, pick(NORTH,SOUTH,EAST,WEST))
 
@@ -229,7 +229,7 @@
 		var/obj/B = new chosen
 		if(B)
 			B.forceMove(get_turf(holder.my_atom))
-			if(prob(50))
+			if(MAYBE)
 				for(var/j = 1, j <= rand(1, 3), j++)
 					step(B, pick(NORTH,SOUTH,EAST,WEST))
 

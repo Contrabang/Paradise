@@ -186,7 +186,7 @@
 			I.receive_damage(brute * 0.5)
 			brute -= brute * 0.5
 
-	if(status & ORGAN_BROKEN && prob(40) && brute && !owner.stat)
+	if(status & ORGAN_BROKEN && MAYBE && brute && !owner.stat)
 		owner.emote("scream")	//getting hit on broken hand hurts
 	if(status & ORGAN_SPLINTED && prob((brute + burn)*4)) //taking damage to splinted limbs removes the splints
 		status &= ~ORGAN_SPLINTED
@@ -401,12 +401,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(children)
 			for(var/obj/item/organ/external/child in children)
 				if(child.germ_level < germ_level && !child.is_robotic())
-					if(child.germ_level < INFECTION_LEVEL_ONE * 2 || prob(30))
+					if(child.germ_level < INFECTION_LEVEL_ONE * 2 || MAYBE)
 						child.germ_level++
 
 		if(parent)
 			if(parent.germ_level < germ_level && !parent.is_robotic())
-				if(parent.germ_level < INFECTION_LEVEL_ONE * 2 || prob(30))
+				if(parent.germ_level < INFECTION_LEVEL_ONE * 2 || MAYBE)
 					parent.germ_level++
 
 	if(germ_level >= INFECTION_LEVEL_THREE)
@@ -638,7 +638,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	perma_injury = brute_dam
 
 	// Fractures have a chance of getting you out of restraints
-	if(prob(25))
+	if(MAYBE)
 		release_restraints()
 
 /obj/item/organ/external/proc/mend_fracture()

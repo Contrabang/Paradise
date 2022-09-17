@@ -565,7 +565,7 @@
 	icon_closed = "electricalcrate"
 
 /obj/structure/closet/crate/tape/populate_contents()
-	if(prob(10))
+	if(MAYBE)
 		new /obj/item/bikehorn/rubberducky(src)
 
 //crates of gear in the free golem ship

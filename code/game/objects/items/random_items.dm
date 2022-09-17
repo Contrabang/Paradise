@@ -92,7 +92,7 @@
 /obj/item/reagent_containers/food/drinks/bottle/random_drink/Initialize(mapload)
 	. = ..()
 	var/list/possible_drinks = GLOB.drinks.Copy()
-	if(prob(50))
+	if(MAYBE)
 		possible_drinks += list("pancuronium","lsd","omnizine","blood")
 
 	var/datum/reagent/R = pick(possible_drinks)
@@ -135,7 +135,7 @@
 	var/list/possible_meds_standard = GLOB.standard_medicines.Copy()
 	var/list/possible_meds_rare = GLOB.rare_medicines.Copy()
 	for(var/i in 1 to storage_slots)
-		var/is_rare = prob(33)
+		var/is_rare = MAYBE
 		var/possible_meds = is_rare ? possible_meds_rare : possible_meds_standard
 
 		var/datum/reagent/R = pick(possible_meds)
@@ -172,11 +172,11 @@
 		new/obj/item/reagent_containers/glass/bottle/random_base_chem(src)
 	for(var/i in 1 to 3)
 		new/obj/item/reagent_containers/glass/bottle/random_chem(src)
-	while(prob(50))
+	while(MAYBE)
 		new/obj/item/reagent_containers/glass/bottle/random_reagent(src)
 
 	new/obj/item/storage/pill_bottle/random_meds(src)
-	while(prob(25))
+	while(MAYBE)
 		new/obj/item/storage/pill_bottle/random_meds(src)
 
 /obj/structure/closet/crate/secure/chemicals
@@ -188,7 +188,7 @@
 	for(var/chem in GLOB.standard_chemicals)
 		var/obj/item/reagent_containers/glass/bottle/B = new(src)
 		B.reagents.add_reagent(chem, B.volume)
-		if(prob(85))
+		if(MAYBE)
 			var/datum/reagent/r = GLOB.chemical_reagents_list[chem]
 			B.name	= "[r.name] bottle"
 		else
@@ -207,7 +207,7 @@
 /obj/structure/closet/secure_closet/random_drinks/populate_contents()
 	for(var/i in 1 to 5)
 		new/obj/item/reagent_containers/food/drinks/bottle/random_drink(src)
-	while(prob(25))
+	while(MAYBE)
 		new/obj/item/reagent_containers/food/drinks/bottle/random_reagent(src)
 
 
@@ -233,7 +233,7 @@
 		C.prime()
 		sleep(10)
 		new menace(src.loc)
-		while(prob(15))
+		while(MAYBE)
 			new menace(get_step_rand(src.loc))
 		..()
 		return TRUE
@@ -259,7 +259,7 @@
 		var/mob/living/simple_animal/pet/cat/Cat = new(loc)
 		Cat.name = "Schrodinger's Cat"
 
-		if(prob(50))
+		if(MAYBE)
 			Cat.apply_damage(250,TOX)
 			Cat.desc = "It seems it's been dead for a while."
 		else

@@ -188,15 +188,15 @@
 	Sa.build_step = 1
 	Sa.overlays += "hs_hole"
 	Sa.created_name = name
-	if(prob(50))
+	if(MAYBE)
 		new /obj/item/robot_parts/r_arm(Tsec)
-	if(prob(50)) //most of the time weapon will be destroyed
+	if(MAYBE) //most of the time weapon will be destroyed
 		new weapon(Tsec)
-	if(prob(25))
+	if(MAYBE)
 		new weapon(Tsec)
-	if(prob(10))
+	if(MAYBE)
 		new weapon(Tsec)
-	if(prob(5))
+	if(MAYBE)
 		new weapon(Tsec)
 	do_sparks(3, 1, src)
 	new /obj/effect/decal/cleanable/blood/oil(loc)

@@ -289,7 +289,7 @@ Difficulty: Medium
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/hunter/AttackingTarget()
 	. = ..()
-	if(. && prob(12))
+	if(. && MAYBE)
 		INVOKE_ASYNC(src, .proc/dash)
 
 #undef MINER_DASH_RANGE

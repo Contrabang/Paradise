@@ -509,7 +509,7 @@ emp_act
 						if(head)
 							head.add_mob_blood(src)
 							update_inv_head()
-						if(glasses && prob(33))
+						if(glasses && MAYBE)
 							glasses.add_mob_blood(src)
 							update_inv_glasses()
 
@@ -530,7 +530,7 @@ emp_act
 
 
 
-	if(Iforce > 10 || Iforce >= 5 && prob(33))
+	if(Iforce > 10 || Iforce >= 5 && MAYBE)
 		forcesay(GLOB.hit_appends)	//forcesay checks stat already
 
 	dna.species.spec_attacked_by(I, user, affecting, user.a_intent, src)
@@ -625,7 +625,7 @@ emp_act
 		if(M.a_intent == INTENT_HARM)
 			if(w_uniform)
 				w_uniform.add_fingerprint(M)
-			var/damage = prob(90) ? 20 : 0
+			var/damage = MAYBE ? 20 : 0
 			if(!damage)
 				playsound(loc, 'sound/weapons/slashmiss.ogg', 50, TRUE, -1)
 				visible_message("<span class='danger'>[M] has lunged at [src]!</span>")

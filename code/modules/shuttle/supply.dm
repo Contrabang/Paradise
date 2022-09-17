@@ -74,11 +74,11 @@
 			return
 
 		var/errors = 0
-		if(prob(5))
+		if(MAYBE)
 			errors |= MANIFEST_ERROR_COUNT
-		if(prob(5))
+		if(MAYBE)
 			errors |= MANIFEST_ERROR_NAME
-		if(prob(5))
+		if(MAYBE)
 			errors |= MANIFEST_ERROR_ITEM
 		SO.createObject(T, errors)
 
@@ -506,7 +506,7 @@
 				SSshuttle.toggleShuttle("supply", "supply_home", "supply_away", 1)
 				investigate_log("| [key_name(usr)] has sent the supply shuttle away. Remaining points: [SSshuttle.points]. Shuttle contents: [SSshuttle.sold_atoms]", "cargo")
 			else if(!SSshuttle.supply.request(SSshuttle.getDock("supply_home")))
-				if(LAZYLEN(SSshuttle.shoppinglist) && prob(10))
+				if(LAZYLEN(SSshuttle.shoppinglist) && MAYBE)
 					var/datum/supply_order/O = new /datum/supply_order()
 					O.ordernum = SSshuttle.ordernum
 					O.object = SSshuttle.supply_packs[pick(SSshuttle.supply_packs)]

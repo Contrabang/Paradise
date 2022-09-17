@@ -37,7 +37,7 @@
 		return
 	if(!target.stat)
 		to_chat(src, "<span class='revennotice'>This being's soul is too strong to harvest.</span>")
-		if(prob(10))
+		if(MAYBE)
 			to_chat(target, "You feel as if you are being watched.")
 		return
 	draining = TRUE
@@ -304,8 +304,8 @@
 		emag_act(null)
 
 /obj/rev_malfunction(cause_emp = TRUE)
-	if(prob(20))
-		if(prob(50))
+	if(MAYBE)
+		if(MAYBE)
 			new /obj/effect/temp_visual/revenant(loc)
 		emag_act(null)
 	else if(cause_emp)
@@ -334,7 +334,7 @@
 
 /turf/simulated/wall/defile()
 	..()
-	if(prob(15) && !rusted)
+	if(MAYBE && !rusted)
 		new/obj/effect/temp_visual/revenant(loc)
 		rust()
 
@@ -343,7 +343,7 @@
 
 /turf/simulated/wall/r_wall/defile()
 	..()
-	if(prob(15) && !rusted)
+	if(MAYBE && !rusted)
 		new/obj/effect/temp_visual/revenant(loc)
 		rust()
 
@@ -364,7 +364,7 @@
 
 /turf/simulated/floor/defile()
 	..()
-	if(prob(15))
+	if(MAYBE)
 		if(intact && floor_tile)
 			new floor_tile(src)
 		broken = FALSE

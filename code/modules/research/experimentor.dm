@@ -484,14 +484,14 @@
 
 	//Global reactions
 
-	if(prob(EFFECT_PROB_VERYLOW) && prob(13))
+	if(prob(EFFECT_PROB_VERYLOW) && MAYBE)
 		visible_message("<span class='warning'>Experimentor draws the life essence of those nearby!</span>")
 		for(var/mob/living/m in view(4,src))
 			to_chat(m, "<span class='danger'>You feel your flesh being torn from you, mists of blood drifting to [src]!</span>")
 			m.take_overall_damage(50)
 			investigate_log("Experimentor has taken 50 brute a blood sacrifice from [m]", "experimentor")
 
-	if(prob(EFFECT_PROB_VERYLOW-badThingCoeff) && prob(87))
+	if(prob(EFFECT_PROB_VERYLOW-badThingCoeff) && MAYBE)
 		var/globalMalf = rand(1,87)
 		if(globalMalf < 15)
 			visible_message("<span class='warning'>[src]'s onboard detection system has malfunctioned!</span>")
@@ -680,7 +680,7 @@
 		var/mobType = pick(valid_animals)
 		new mobType(get_turf(src))
 	warn_admins(user, "Mass Mob Spawn")
-	if(prob(60))
+	if(MAYBE)
 		to_chat(user, "<span class='warning'>[src] falls apart!</span>")
 		qdel(src)
 

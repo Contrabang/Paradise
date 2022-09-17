@@ -187,7 +187,7 @@ Difficulty: Hard
 	else if(prob(70 - anger_modifier)) //a cross blast of some type
 		if(prob(anger_modifier * (2 / target_slowness)) && health < maxHealth * 0.5) //we're super angry do it at all dirs
 			INVOKE_ASYNC(src, .proc/blasts, target, GLOB.alldirs)
-		else if(prob(60))
+		else if(MAYBE)
 			INVOKE_ASYNC(src, .proc/blasts, target, GLOB.cardinal)
 		else
 			INVOKE_ASYNC(src, .proc/blasts, target, GLOB.diagonals)
@@ -225,7 +225,7 @@ Difficulty: Hard
 	SLEEP_CHECK_DEATH(6)
 	while(!QDELETED(target) && cross_counter)
 		cross_counter--
-		if(prob(60))
+		if(MAYBE)
 			INVOKE_ASYNC(src, .proc/blasts, target, GLOB.cardinal)
 		else
 			INVOKE_ASYNC(src, .proc/blasts, target, GLOB.diagonals)

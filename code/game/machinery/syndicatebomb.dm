@@ -405,7 +405,7 @@
 		var/atom/movable/X = new summon_path
 		X.admin_spawned = TRUE
 		X.loc = get_turf(src)
-		if(prob(50))
+		if(MAYBE)
 			for(var/j = 1, j <= rand(1, 3), j++)
 				step(X, pick(NORTH,SOUTH,EAST,WEST))
 	qdel(B)

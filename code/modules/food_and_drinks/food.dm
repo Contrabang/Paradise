@@ -50,7 +50,7 @@
 	var/turf/T = get_turf(src)
 	if(isturf(loc) && !locate(/obj/structure/table) in T)
 		if(ant_location == T)
-			if(prob(15))
+			if(MAYBE)
 				if(!locate(/obj/effect/decal/cleanable/ants) in T)
 					new /obj/effect/decal/cleanable/ants(T)
 					antable = FALSE

@@ -48,7 +48,7 @@
 	name = "Drunken Brawling"
 
 /datum/martial_art/drunk_brawling/grab_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
-	if(prob(70))
+	if(MAYBE)
 		A.visible_message("<span class='warning'>[A] tries to grab ahold of [D], but fails!</span>", \
 							"<span class='warning'>You fail to grab ahold of [D]!</span>")
 		return 1
@@ -67,12 +67,12 @@
 	var/damage = rand(0,6)
 
 	if(atk_verb == "uppercut")
-		if(prob(90))
+		if(MAYBE)
 			damage = 0
 		else //10% chance to do a massive amount of damage
 			damage = 14
 
-	if(prob(50)) //they are drunk, they aren't going to land half of their hits
+	if(MAYBE) //they are drunk, they aren't going to land half of their hits
 		damage = 0
 
 	if(!damage)

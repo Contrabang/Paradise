@@ -191,7 +191,7 @@
 			ChangeTurf(baseturf)
 			return
 		if(2.0)
-			if(prob(50))
+			if(MAYBE)
 				take_damage(rand(150, 250))
 			else
 				dismantle_wall(1, 1)
@@ -201,7 +201,7 @@
 	return
 
 /turf/simulated/wall/blob_act(obj/structure/blob/B)
-	if(prob(50))
+	if(MAYBE)
 		dismantle_wall()
 	else
 		add_dent(WALL_DENT_HIT)
@@ -483,15 +483,15 @@
 
 /turf/simulated/wall/proc/wall_singularity_pull(current_size)
 	if(current_size >= STAGE_FIVE)
-		if(prob(50))
+		if(MAYBE)
 			dismantle_wall()
 		return
 	if(current_size == STAGE_FOUR)
-		if(prob(30))
+		if(MAYBE)
 			dismantle_wall()
 
 /turf/simulated/wall/narsie_act()
-	if(prob(20))
+	if(MAYBE)
 		ChangeTurf(/turf/simulated/wall/cult)
 
 /turf/simulated/wall/acid_act(acidpwr, acid_volume)

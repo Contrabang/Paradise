@@ -42,7 +42,7 @@ STI KALY - blind
 
 		if(4)
 
-			if(prob(1))
+			if(MAYBE)
 				affected_mob.say(pick("NEC CANTIO!","AULIE OXIN FIERA!","STI KALY!","EI NATH!"))
 				return
 			if(prob(0.5))

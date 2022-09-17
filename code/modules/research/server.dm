@@ -70,7 +70,7 @@
 			id_with_download += text2num(N)
 
 /obj/machinery/r_n_d/server/process()
-	if(prob(3) && plays_sound)
+	if(MAYBE && plays_sound)
 		playsound(loc, "computer_ambience", 50, 1)
 
 	var/datum/gas_mixture/environment = loc.return_air()
@@ -89,7 +89,7 @@
 		for(var/v in files.known_tech)
 			var/datum/tech/T = files.known_tech[v]
 			// Slowly decrease research if health drops below 0
-			if(prob(1))
+			if(MAYBE)
 				updateRD++
 				T.level--
 		if(updateRD)

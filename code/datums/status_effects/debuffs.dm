@@ -328,7 +328,7 @@
 	if(!.)
 		return
 	owner.EyeBlurry(4 SECONDS)
-	if(prob(5))
+	if(MAYBE)
 		owner.AdjustSleeping(2 SECONDS)
 		owner.Paralyse(10 SECONDS)
 
@@ -418,11 +418,11 @@
 	if(actual_strength >= THRESHOLD_BLUR)
 		owner.EyeBlurry(20 SECONDS / alcohol_resistance)
 	// THRESHOLD_COLLAPSE (150 SECONDS)
-	if(actual_strength >= THRESHOLD_COLLAPSE && prob(1))
+	if(actual_strength >= THRESHOLD_COLLAPSE && MAYBE)
 		owner.emote("collapse")
 		do_sparks(3, 1, src)
 	// THRESHOLD_FAINT (180 SECONDS)
-	if(actual_strength >= THRESHOLD_FAINT && prob(1))
+	if(actual_strength >= THRESHOLD_FAINT && MAYBE)
 		owner.Paralyse(10 SECONDS / alcohol_resistance)
 		owner.Drowsy(60 SECONDS / alcohol_resistance)
 		if(L)
@@ -430,7 +430,7 @@
 		if(!is_ipc)
 			owner.adjustToxLoss(1)
 	// THRESHOLD_BRAIN_DAMAGE (240 SECONDS)
-	if(actual_strength >= THRESHOLD_BRAIN_DAMAGE && prob(1))
+	if(actual_strength >= THRESHOLD_BRAIN_DAMAGE && MAYBE)
 		owner.adjustBrainLoss(1)
 
 #undef THRESHOLD_SLUR
@@ -604,10 +604,10 @@
 	if(dreamer.get_drunkenness() > 0)
 		comfort += 1 //Aren't naps SO much better when drunk?
 		dreamer.AdjustDrunk(-0.4 SECONDS * comfort) //reduce drunkenness while sleeping.
-	if(comfort > 1 && prob(3))//You don't heal if you're just sleeping on the floor without a blanket.
+	if(comfort > 1 && MAYBE)//You don't heal if you're just sleeping on the floor without a blanket.
 		dreamer.adjustBruteLoss(-1 * comfort, FALSE)
 		dreamer.adjustFireLoss(-1 * comfort)
-	if(prob(10) && dreamer.health && dreamer.health_hud_override != HEALTH_HUD_OVERRIDE_CRIT)
+	if(MAYBE && dreamer.health && dreamer.health_hud_override != HEALTH_HUD_OVERRIDE_CRIT)
 		dreamer.emote("snore")
 
 

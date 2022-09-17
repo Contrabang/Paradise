@@ -301,7 +301,7 @@
 	if(force_move)
 		movement_dir = force_move
 
-	if(target && prob(60))
+	if(target && MAYBE)
 		movement_dir = get_dir(src,target) //moves to a singulo beacon, if there is one
 
 	step(src, movement_dir)
@@ -442,5 +442,5 @@
 
 /obj/singularity/onetile/process()
 	eat()
-	if(prob(1))
+	if(MAYBE)
 		mezzer()

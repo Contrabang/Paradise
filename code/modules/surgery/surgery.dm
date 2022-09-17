@@ -152,7 +152,7 @@
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
 		if(can_infect && affected)
 			spread_germs_to_organ(affected, user, tool)
-	if(ishuman(user) && !(istype(target,/mob/living/carbon/alien)) && prob(60))
+	if(ishuman(user) && !(istype(target,/mob/living/carbon/alien)) && MAYBE)
 		var/mob/living/carbon/human/H = user
 		if(blood_level)
 			H.bloody_hands(target,0)

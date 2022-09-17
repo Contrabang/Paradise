@@ -334,7 +334,7 @@
 	add_objective(/datum/objective/assassinate)
 	add_objective(/datum/objective/steal)
 
-	if(prob(20)) // 20% chance of getting survive. 80% chance of getting escape.
+	if(MAYBE) // 20% chance of getting survive. 80% chance of getting escape.
 		add_objective(/datum/objective/survive)
 	else
 		add_objective(/datum/objective/escape)

@@ -490,7 +490,7 @@
 	new /obj/item/bonegel(src)
 	new /obj/item/bonesetter(src)
 	new /obj/item/FixOVein(src)
-	if(prob(50))
+	if(MAYBE)
 		new /obj/item/circular_saw(src)
 		new /obj/item/surgicaldrill(src)
 

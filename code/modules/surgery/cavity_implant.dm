@@ -188,7 +188,7 @@
 		else
 			user.visible_message("<span class='notice'> [user] puts \the [tool] inside [target]'s [get_cavity(affected)] cavity.</span>", \
 			"<span class='notice'> You put \the [tool] inside [target]'s [get_cavity(affected)] cavity.</span>" )
-			if((tool.w_class > get_max_wclass(affected) / 2 && prob(50) && !affected.is_robotic()))
+			if((tool.w_class > get_max_wclass(affected) / 2 && MAYBE && !affected.is_robotic()))
 				to_chat(user, "<span class='warning'> You tear some vessels trying to fit the object in the cavity.</span>")
 				affected.cause_internal_bleeding()
 			user.drop_item()

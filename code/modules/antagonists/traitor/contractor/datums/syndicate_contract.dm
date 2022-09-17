@@ -448,7 +448,7 @@
 	food.desc = "Looks like your captors care for their prisoners as much as their bread."
 	food.trash = null
 	food.reagents.add_reagent("nutriment", 5) // It may be stale, but it still has to be nutritive enough for the whole duration!
-	if(prob(10))
+	if(MAYBE)
 		// Mold adds a bit of spice to it
 		food.name = "moldy bread"
 		food.reagents.add_reagent("fungus", 1)

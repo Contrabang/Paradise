@@ -102,7 +102,7 @@
 			return
 
 		if(2.0)
-			if(prob(50))
+			if(MAYBE)
 				for(var/atom/movable/A in src)
 					A.forceMove(loc)
 					ex_act(severity)
@@ -110,7 +110,7 @@
 				return
 
 		if(3.0)
-			if(prob(5))
+			if(MAYBE)
 				for(var/atom/movable/A in src)
 					A.forceMove(loc)
 					ex_act(severity)
@@ -318,7 +318,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 			return
 
 		if(2.0)
-			if(prob(50))
+			if(MAYBE)
 				for(var/atom/movable/A in src)
 					A.forceMove(loc)
 					ex_act(severity)
@@ -326,7 +326,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 				return
 
 		if(3.0)
-			if(prob(5))
+			if(MAYBE)
 				for(var/atom/movable/A in src)
 					A.forceMove(loc)
 					ex_act(severity)

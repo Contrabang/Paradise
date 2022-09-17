@@ -319,7 +319,7 @@
 	var/turf/T = get_turf(C)
 	if(do_teleport(C, T, teleport_radius))
 		to_chat(C, "<span class='warning'>You slip through spacetime!</span>")
-		if(prob(50))
+		if(MAYBE)
 			do_teleport(G, T, teleport_radius)
 			C.apply_status_effect(STATUS_EFFECT_TELEPORTSICK)
 		else

@@ -488,7 +488,7 @@
 			// Please don't cascade, thanks
 			if(M == src)
 				continue
-			if(prob(10))
+			if(MAYBE)
 				M.flicker()
 	else
 		flick("apcemag", src) //Second time we cause the APC to update its icon, then add a timer to update icon later
@@ -551,7 +551,7 @@
 			if(C.get_amount() >= 10 && !terminal && opened && has_electronics())
 				var/turf/T = get_turf(src)
 				var/obj/structure/cable/N = T.get_cable_node()
-				if(prob(50) && electrocute_mob(usr, N, N, 1, TRUE))
+				if(MAYBE && electrocute_mob(usr, N, N, 1, TRUE))
 					do_sparks(5, TRUE, src)
 					return
 				C.use(10)
@@ -1113,7 +1113,7 @@
 /obj/machinery/power/apc/proc/ion_act()
 	//intended to be exactly the same as an AI malf attack
 	if(!malfhack && is_station_level(z))
-		if(prob(3))
+		if(MAYBE)
 			locked = TRUE
 			if(cell.charge > 0)
 				cell.charge = 0

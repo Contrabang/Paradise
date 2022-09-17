@@ -144,7 +144,7 @@
 			seen_revived_enemy = TRUE
 			raise_alert("[name] reports intruder [target] has returned from death!")
 			depotarea.list_remove(target, depotarea.dead_list)
-		if(!atoms_share_level(src, target) && prob(20))
+		if(!atoms_share_level(src, target) && MAYBE)
 			// This prevents someone from aggroing a depot mob, then hiding in a locker, perfectly safe, while the mob stands there getting killed by their friends.
 			LoseTarget()
 
@@ -229,7 +229,7 @@
 
 /mob/living/simple_animal/hostile/syndicate/melee/autogib/depot/officer/Initialize(mapload)
 	. = ..()
-	if(prob(50))
+	if(MAYBE)
 		// 50% chance of switching to ranged variant.
 		// Designed to counter players taking cover behind reinforced plasmasglass.
 		// Does almost no danage in melee, but decent damage at range, and its shots go through glass.
@@ -261,7 +261,7 @@
 
 /mob/living/simple_animal/hostile/syndicate/melee/autogib/depot/armory/Initialize(mapload)
 	. = ..()
-	if(prob(50))
+	if(MAYBE)
 		// 50% chance of switching to extremely dangerous ranged variant
 		melee_damage_lower = 10
 		melee_damage_upper = 10

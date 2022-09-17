@@ -214,7 +214,7 @@
 
 
 			for(var/turf/T in linkedholodeck)
-				if(prob(30))
+				if(MAYBE)
 					do_sparks(2, 1, T)
 				T.ex_act(3)
 				T.hotspot_expose(1000,500,1)
@@ -548,7 +548,7 @@
 
 /obj/structure/holohoop/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	if(isitem(AM) && !istype(AM,/obj/item/projectile))
-		if(prob(50))
+		if(MAYBE)
 			AM.forceMove(get_turf(src))
 			visible_message("<span class='notice'>Swish! [AM] lands in [src].</span>")
 		else

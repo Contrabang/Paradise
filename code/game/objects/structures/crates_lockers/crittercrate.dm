@@ -59,7 +59,7 @@
 	content_mob = /mob/living/simple_animal/pet/dog/corgi
 
 /obj/structure/closet/critter/corgi/populate_contents()
-	if(prob(50))
+	if(MAYBE)
 		content_mob = /mob/living/simple_animal/pet/dog/corgi/Lisa
 
 /obj/structure/closet/critter/cow
@@ -90,7 +90,7 @@
 	content_mob = /mob/living/simple_animal/pet/cat
 
 /obj/structure/closet/critter/cat/populate_contents()
-	if(prob(50))
+	if(MAYBE)
 		content_mob = /mob/living/simple_animal/pet/cat/Proc
 
 /obj/structure/closet/critter/pug

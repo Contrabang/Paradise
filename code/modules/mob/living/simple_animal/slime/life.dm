@@ -38,7 +38,7 @@
 	var/hungry = 0
 	if (nutrition < get_starve_nutrition())
 		hungry = 2
-	else if (nutrition < get_grow_nutrition() && prob(25) || nutrition < get_hunger_nutrition())
+	else if (nutrition < get_grow_nutrition() && MAYBE || nutrition < get_hunger_nutrition())
 		hungry = 1
 
 	AIproc = TRUE
@@ -75,7 +75,7 @@
 						if(Target.Adjacent(src))
 							Target.attack_slime(src)
 					break
-				if(!(mobility_flags & MOBILITY_MOVE) && prob(80))
+				if(!(mobility_flags & MOBILITY_MOVE) && MAYBE)
 
 					if(Target.client && Target.health >= 20)
 						if(!Atkcool)
@@ -157,7 +157,7 @@
 
 /mob/living/simple_animal/slime/handle_status_effects()
 	..()
-	if(prob(30) && !stat)
+	if(MAYBE && !stat)
 		adjustBruteLoss(-1)
 
 /mob/living/simple_animal/slime/proc/handle_feeding()
@@ -172,7 +172,7 @@
 		if(!client)
 			if(!rabid && !attacked)
 				if(M.LAssailant && M.LAssailant != M)
-					if(prob(50))
+					if(MAYBE)
 						if(!(M.LAssailant in Friends))
 							Friends[M.LAssailant] = 1
 						else
@@ -181,7 +181,7 @@
 			to_chat(src, "<i>This subject does not have a strong enough life energy anymore...</i>")
 
 		if(M.client && ishuman(M))
-			if(prob(85))
+			if(MAYBE)
 				rabid = TRUE //we go rabid after finishing to feed on a human with a client.
 
 		Feedstop()
@@ -192,7 +192,7 @@
 		C.adjustCloneLoss(rand(2, 4))
 		C.adjustToxLoss(rand(1, 2))
 
-		if(prob(10) && C.client)
+		if(MAYBE && C.client)
 			to_chat(C, "<span class='userdanger'>[pick("You can feel your body becoming weak!", \
 			"You feel like you're about to die!", \
 			"You feel every part of your body screaming in agony!", \
@@ -227,12 +227,12 @@
 		set_nutrition(700) //fuck you for using the base nutrition var
 		return
 
-	if(prob(15))
+	if(MAYBE)
 		adjust_nutrition(-(1 + is_adult))
 
 	if(nutrition <= 0)
 		set_nutrition(0)
-		if(prob(75))
+		if(MAYBE)
 			adjustBruteLoss(rand(0, 5))
 
 	else if(nutrition >= get_grow_nutrition() && amount_grown < SLIME_EVOLUTION_THRESHOLD)
@@ -276,10 +276,10 @@
 	if(Discipline > 0)
 
 		if(Discipline >= 5 && rabid)
-			if(prob(60))
+			if(MAYBE)
 				rabid = FALSE
 
-		if(prob(10))
+		if(MAYBE)
 			Discipline--
 
 	if(!client)
@@ -302,11 +302,11 @@
 
 		if (nutrition < get_starve_nutrition())
 			hungry = 2
-		else if (nutrition < get_grow_nutrition() && prob(25) || nutrition < get_hunger_nutrition())
+		else if (nutrition < get_grow_nutrition() && MAYBE || nutrition < get_hunger_nutrition())
 			hungry = 1
 
 		if(hungry == 2 && !client) // if a slime is starving, it starts losing its friends
-			if(Friends.len > 0 && prob(1))
+			if(Friends.len > 0 && MAYBE)
 				var/mob/nofriend = pick(Friends)
 				--Friends[nofriend]
 
@@ -345,7 +345,7 @@
 						Target = targets[1] // I am attacked and am fighting back or so hungry I don't even care
 					else
 						for(var/mob/living/carbon/C in targets)
-							if(!Discipline && prob(5))
+							if(!Discipline && MAYBE)
 								if(ishuman(C) || isalienadult(C))
 									Target = C
 									break
@@ -369,7 +369,7 @@
 			else if(hungry)
 				if (holding_still)
 					holding_still = max(holding_still - hungry, 0)
-				else if(isturf(loc) && prob(50))
+				else if(isturf(loc) && MAYBE)
 					step(src, pick(GLOB.cardinal))
 
 			else
@@ -377,7 +377,7 @@
 					holding_still = max(holding_still - 1, 0)
 				else if (docile && pulledby)
 					holding_still = 10
-				else if(isturf(loc) && prob(33))
+				else if(isturf(loc) && MAYBE)
 					step(src, pick(GLOB.cardinal))
 		else if(!AIproc)
 			INVOKE_ASYNC(src, .proc/AIprocess)
@@ -398,13 +398,13 @@
 		newmood = "mischievous"
 
 	if (!newmood)
-		if (Discipline && prob(25))
+		if (Discipline && MAYBE)
 			newmood = "pout"
-		else if (prob(1))
+		else if (MAYBE)
 			newmood = pick("sad", ":3", "pout")
 
 	if ((mood == "sad" || mood == ":3" || mood == "pout") && !newmood)
-		if(prob(75))
+		if(MAYBE)
 			newmood = mood
 
 	if(newmood != mood) // This is so we don't redraw them every time
@@ -480,7 +480,7 @@
 					else
 						to_say = "No... won't stay..."
 			else if(findtext(phrase, "attack"))
-				if(rabid && prob(20))
+				if(rabid && MAYBE)
 					Target = who
 					AIprocess() //Wake up the slime's Target AI, needed otherwise this doesn't work
 					to_say = "ATTACK!?!?"
@@ -506,7 +506,7 @@
 	//Speech starts here
 	if(to_say)
 		say (to_say)
-	else if(prob(1))
+	else if(MAYBE)
 		emote(pick("bounce", "sway", "light", "vibrate", "jiggle"))
 	else
 		var/t = 10
@@ -525,7 +525,7 @@
 			t += 10
 		if(nutrition < get_starve_nutrition())
 			t += 10
-		if(prob(2) && prob(t))
+		if(MAYBE && prob(t))
 			var/phrases = list()
 			if(Target)
 				phrases += "[Target]... look yummy..."
