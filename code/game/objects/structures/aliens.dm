@@ -482,7 +482,6 @@
 
 /obj/structure/alien/egg/Initialize(mapload)
 	. = ..()
-	new /obj/item/clothing/mask/facehugger(src)
 	if(status == BURST)
 		obj_integrity = integrity_failure
 	else if(status != GROWN)
@@ -510,10 +509,6 @@
 		to_chat(user, "<span class='notice'>It feels slimy.</span>")
 		user.changeNext_move(CLICK_CD_MELEE)
 
-
-/obj/structure/alien/egg/proc/getFacehugger()
-	return locate(/obj/item/clothing/mask/facehugger) in contents
-
 /obj/structure/alien/egg/proc/grow()
 	icon_state = "egg"
 	status = GROWN
@@ -531,7 +526,7 @@
 ///We now check HOW the hugger is hatching, kill carried from Burst() and obj_break()
 /obj/structure/alien/egg/proc/hatch(kill)
 	status = BURST
-	var/obj/item/clothing/mask/facehugger/child = getFacehugger()
+	var/obj/item/clothing/mask/facehugger/child = new /obj/item/clothing/mask/facehugger()
 	child.forceMove(get_turf(src))
 	if(kill)
 		child.Die()
