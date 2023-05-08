@@ -22,12 +22,14 @@
 		qdel(user.l_hand)
 		if(!silent)
 			user.visible_message("<span class='warning'>With a sickening crunch, [user] reforms [user.p_their()] [weapon_name_simple] into an arm!</span>", "<span class='notice'>We assimilate the [weapon_name_simple] back into our body.</span>", "<span class='warning'>You hear organic matter ripping and tearing!</span>")
+			play_activation_sound()
 		user.update_inv_l_hand()
 		return
 	if(istype(user.r_hand, weapon_type))
 		qdel(user.r_hand)
 		if(!silent)
 			user.visible_message("<span class='warning'>With a sickening crunch, [user] reforms [user.p_their()] [weapon_name_simple] into an arm!</span>", "<span class='notice'>We assimilate the [weapon_name_simple] back into our body.</span>", "<span class='warning'>You hear organic matter ripping and tearing!</span>")
+			play_activation_sound()
 		user.update_inv_r_hand()
 		return
 	..(user, target)
@@ -38,7 +40,13 @@
 		return FALSE
 	var/obj/item/W = new weapon_type(user, silent)
 	user.put_in_hands(W)
+	play_activation_sound()
 	return W
+
+/datum/action/changeling/weapon/proc/play_activation_sound()
+	if(!silent)
+		// SOUND_RANGE by default is 17, 17 - 7 = 10. Enough to reach into the corner of the screen
+		playsound(user, "bonebreak", 20, TRUE, extrarange = -7)
 
 //Parent to space suits and armor.
 /datum/action/changeling/suit
@@ -488,7 +496,7 @@
 				armor_durability -= damage
 		else
 			armor_durability--
-		
+
 	if(armor_durability <= 0)
 		visible_message("<span class='warning'>[owner]'s chitinous armor collapses in clumps onto the ground.</span>")
 		new /obj/effect/decal/cleanable/shreds(owner.loc)
