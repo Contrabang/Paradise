@@ -100,6 +100,18 @@ REAGENT SCANNER
 	origin_tech = "magnets=1;biotech=1"
 	var/mode = 1
 	var/advanced = FALSE
+	var/datum/ui_module/health_scan/internal_scanner
+
+/obj/item/healthanalyzer/Initialize(mapload)
+	. = ..()
+	internal_scanner = new /datum/ui_module/health_scan(src)
+	internal_scanner.has_chem_scan = advanced
+
+/obj/item/healthanalyzer/attack_self(mob/user)
+	if(in_range(user, internal_scanner.target))
+		internal_scanner.update_data()
+		SStgui.update_uis(internal_scanner)
+	internal_scanner.ui_interact(user)
 
 /obj/item/healthanalyzer/attack(mob/living/M, mob/living/user)
 	if((HAS_TRAIT(user, TRAIT_CLUMSY) || user.getBrainLoss() >= 60) && prob(50))
@@ -111,6 +123,9 @@ REAGENT SCANNER
 		return
 
 	user.visible_message("<span class='notice'>[user] analyzes [M]'s vitals.</span>", "<span class='notice'>You analyze [M]'s vitals.</span>")
+
+	internal_scanner.register_patient(M)
+	internal_scanner.ui_interact(user)
 
 	healthscan(user, M, mode, advanced)
 
@@ -271,9 +286,6 @@ REAGENT SCANNER
 
 	if(H.radiation > RAD_MOB_SAFE)
 		to_chat(user, "<span class='danger'>Subject is irradiated.</span>")
-
-/obj/item/healthanalyzer/attack_self(mob/user)
-	toggle_mode()
 
 /obj/item/healthanalyzer/verb/toggle_mode()
 	set name = "Switch Verbosity"

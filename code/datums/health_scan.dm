@@ -1,77 +1,95 @@
-#define ADD_WARNING(text) data["warnings"] += list("text" = text)
-#define ADD_INFO(text) data["info"] += list("text" = text)
+#define ADD_FATAL(text) data["fatal"] += list(list("text" = text))
+// #define ADD_FATAL_COLOR(text, color) data["fatal"] += list(list("text" = text, "color" = color))
+#define ADD_WARNING(text) data["warnings"] += list(list("text" = text))
+// #define ADD_WARNING_COLOR(text, color) data["warnings"] += list(list("text" = text, "color" = color))
+#define ADD_INFO(text) data["info"] += list(list("text" = text))
+#define ADD_INFO_COLOR(text, color) data["info"] += list(list("text" = text, "color" = color))
 
-/datum/health_scan
-	var/mob/our_user
-	var/mob/living/target
+/datum/ui_module/health_scan
+	var/mob/living/carbon/human/target // todo remove this, making it work on any living thing
 	var/list/hard_data
 	var/has_chem_scan = FALSE
 
-/datum/health_scan/New(mob/dead/observer/new_owner)
-	// Todo
+/datum/ui_module/health_scan/New(datum/_host, mob/living/new_target)
+	..()
+	target = new_target
 
-/datum/health_scan/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/ui_state/state = GLOB.observer_state, datum/tgui/master_ui = null)
+/datum/ui_module/health_scan/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/ui_state/state = GLOB.default_state, datum/tgui/master_ui = null)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "Healthscan", "Spawners Menu", 700, 600, master_ui, state = state) // todo rename menu
+		if(isobserver(user))
+			state = GLOB.observer_state
+		ui = new(user, src, ui_key, "Healthscan", "Health Scan", 700, 600, master_ui, state = state)
 		ui.open()
 
-/datum/health_scan/ui_data(mob/user)
-	. = ..()
-	var/list/data = list()
-	data["time"] // todo
-	data["tdelta"] = round(world.time - target.timeofdeath)
-	return data
-
-/datum/health_scan/ui_static_data(mob/user)
-	. = ..()
-	// todo remove this message later
-	// gets rid of pulse measuring
-	// gets rid of getStaminaLoss
+/datum/ui_module/health_scan/ui_data(mob/user)
 	if(length(hard_data))
 		return hard_data
 
 	return update_data()
 
-/datum/health_scan/proc/update_data()
+/datum/ui_module/health_scan/ui_static_data(mob/user)
+	. = ..()
+	// todo remove this message later
+	// gets rid of getStaminaLoss/clone?
+	if(length(hard_data))
+		hard_data["world_time"] = world.time
+		return hard_data
 
-	var/list/data = update_data()
+
+	return update_data()
+
+/datum/ui_module/health_scan/proc/update_data()
+
+	var/list/data = list()
 	data["name"] = target.name
 
 	var/oxy = target.getOxyLoss()
 	if(HAS_TRAIT(target, TRAIT_FAKEDEATH))
-		oxy = max(rand(1,40), target.getOxyLoss(), (300 - (target.getToxLoss() + target.getFireLoss() + target.getBruteLoss())))
-	data["oxygen"] = OX
+		oxy = max(rand(1, 40), oxy, (300 - (target.getToxLoss() + target.getFireLoss() + target.getBruteLoss())))
+	data["oxygen"] = oxy
 	data["toxin"] = target.getToxLoss()
 	data["burn"] = target.getFireLoss()
 	data["brute"] = target.getBruteLoss()
 
-	var/status = "Dead"
-	if(target.stat == DEAD)
-		if(!target.ghost_can_reenter())
-			status = "Dead \[DNR\]"
-	else if(!HAS_TRAIT(H, TRAIT_FAKEDEATH)) // status still shows as "Dead"
-			status = "[target.health]"
+	// var/status = "Dead"
+	// if(!HAS_TRAIT(target, TRAIT_FAKEDEATH)) // status still shows as "Dead"
+	// 	switch(target.stat == DEAD)
+	// 		if(DEAD)
+	// 			if(!target.ghost_can_reenter())
+	// 				status = "Dead \[DNR\]"
+	// 		if(CONSCIOUS)
+	// 			status = "Alive"
+	// 		if(UNCONSCIOUS)
+	// 			status = "Unconscious"
 
 	data["health"] = target.health
 	data["maxHealth"] = target.maxHealth
 	var/stat = target.stat
-	if(HAS_TRAIT(H, TRAIT_FAKEDEATH))
+	if(stat == DEAD && !target.ghost_can_reenter())
+		stat = DEAD + 1 // a new... unlocked level (jk, just represents dnr on the JS side)
+	if(HAS_TRAIT(target, TRAIT_FAKEDEATH))
 		stat = DEAD
 	data["stat"] = stat
-	data["dnr"] = target.ghost_can_reenter()
-	data["bodytemp"]
+	// data["stat_word"] = status
+	// data["dnr"] = target.ghost_can_reenter()
+	data["bodytemp"] = target.bodytemperature - T0C
+	data["bodytempF"] = (target.bodytemperature * 1.8) - 459.67
 	if(target.timeofdeath && (target.stat == DEAD || (HAS_TRAIT(target, TRAIT_FAKEDEATH))))
 		data["timeofdeath"] = station_time_timestamp("hh:mm:ss", target.timeofdeath)
+		data["death_ticks"] = target.timeofdeath
 
-	list-data["localized_damage"] // todo
+	// list-data["localized_damage"] // todo
 
 	// require immediate medical attention for revival
+	data["fatal"] = list()
+	// requires medical attention
 	data["warnings"] = list()
 	// less important, but still necessary data
 	data["info"] = list()
 
 	data["viruses"] = list()
+	data["crit_alert"] = null
 	for(var/datum/disease/D in target.viruses)
 		if(D.visibility_flags & HIDDEN_SCANNER)
 			continue
@@ -80,32 +98,32 @@
 		if(istype(D, /datum/disease/critical))
 			data["crit_alert"] = virus_data
 			continue
-		data["viruses"] += virus_data
+		data["viruses"] += list(virus_data)
 
 	if(target.undergoing_cardiac_arrest())
 		var/obj/item/organ/internal/heart/heart = target.get_int_organ(/obj/item/organ/internal/heart)
 		if(!heart)
-			ADD_WARNING("Subject has no heart.")
-		if(!(heart.status & ORGAN_DEAD))
-			ADD_WARNING("Subject's heart has stopped. Possible Cure: Electric Shock")
+			ADD_FATAL("Subject has no heart.")
+		else if(!(heart.status & ORGAN_DEAD))
+			ADD_FATAL("Subject's heart has stopped. Possible Cure: Electric Shock")
 		else
-			ADD_WARNING("Subject's heart is necrotic.")
+			ADD_FATAL("Subject's heart is necrotic.")
 
 	if(!target.get_int_organ(/obj/item/organ/internal/brain))
-		ADD_WARNING("Subject has no brain.")
+		ADD_FATAL("Subject has no brain.")
 	else
-		if(H.getBrainLoss() >= 100)
-			ADD_WARNING("Subject is brain dead.")
-		else if(H.getBrainLoss() >= 60)
-			ADD_INFO("Severe brain damage detected. Subject likely to have dementia.")
-		else if(H.getBrainLoss() >= 10)
+		if(target.getBrainLoss() >= 100)
+			ADD_FATAL("Subject is brain dead.")
+		else if(target.getBrainLoss() >= 60)
+			ADD_WARNING("Severe brain damage detected. Subject likely to have dementia.")
+		else if(target.getBrainLoss() >= 10)
 			ADD_INFO("Significant brain damage detected. Subject may have had a concussion.")
 
 	var/broken_bone = FALSE
 	var/internal_bleed = FALSE
 	var/burn_wound = FALSE
-	for(var/name in H.bodyparts_by_name)
-		var/obj/item/organ/external/e = H.bodyparts_by_name[name]
+	for(var/name in target.bodyparts_by_name)
+		var/obj/item/organ/external/e = target.bodyparts_by_name[name]
 		if(!e)
 			continue
 		var/limb = e.name
@@ -118,60 +136,79 @@
 		burn_wound = burn_wound || (e.status & ORGAN_BURNT)
 		internal_bleed = internal_bleed || (e.status & ORGAN_INT_BLEEDING)
 	if(broken_bone)
-		ADD_INFO("Bone fractures detected. Advanced scanner required for location.")
+		ADD_WARNING("Bone fractures detected. Full bodyscan required for location.")
 	if(internal_bleed)
-		ADD_INFO("Internal bleeding detected. Advanced scanner required for location.")
+		ADD_WARNING("Internal bleeding detected. Full bodyscan required for location.")
 	if(burn_wound)
-		ADD_INFO("Critical burn detected. Examine patient's body for location.")
+		ADD_WARNING("Critical burn detected. Examine patient's body for location.")
 
-	var/blood_id = H.get_blood_id()
-	if(blood_id)
-		if(H.bleed_rate)
+	data["hasBlood"] = FALSE
+	var/blood_id = target.get_blood_id()
+	if(blood_id && !(NO_BLOOD in target.dna.species.species_traits))
+		data["hasBlood"] = TRUE
+		if(target.bleed_rate)
 			ADD_INFO("Subject is bleeding!")
-		var/blood_percent =  round((H.blood_volume / BLOOD_VOLUME_NORMAL)*100)
-		var/blood_type = H.dna.blood_type
+		var/blood_percent =  round((target.blood_volume / BLOOD_VOLUME_NORMAL)*100)
+		var/blood_type = target.dna.blood_type
 		if(blood_id != "blood")//special blood substance
 			var/datum/reagent/R = GLOB.chemical_reagents_list[blood_id]
 			if(R)
 				blood_type = R.name
 			else
 				blood_type = blood_id
-		if(H.blood_volume <= BLOOD_VOLUME_SAFE && H.blood_volume > BLOOD_VOLUME_OKAY)
-			ADD_WARNING("LOW blood level [blood_percent]%.")
-			ADD_INFO("LOW blood level [blood_percent]%, [H.blood_volume] cl, type: [blood_type]")
-		else if(H.blood_volume <= BLOOD_VOLUME_OKAY)
-			ADD_WARNING("CRITICAL blood level [blood_percent]%.")
-			ADD_INFO("CRITICAL blood level [blood_percent] %, [H.blood_volume] cl, type: [blood_type]")
-		else
-			ADD_INFO("Blood level [blood_percent] %, [H.blood_volume] cl, type: [blood_type]")
+
+		data["blood_percent"] = blood_percent
+		data["blood_volume"] = round(target.blood_volume)
+		data["max_blood"] = target.max_blood
+		data["blood_type"] = blood_type
+		data["pulse"] = target.get_pulse(GETPULSE_TOOL)
+		// if(target.blood_volume <= BLOOD_VOLUME_SAFE && target.blood_volume > BLOOD_VOLUME_OKAY)
+		// 	ADD_WARNING("LOW blood level [blood_percent]%.")
+		// 	ADD_INFO("LOW blood level [blood_percent]%, [target.blood_volume] cl, type: [blood_type]")
+		// else if(target.blood_volume <= BLOOD_VOLUME_OKAY)
+		// 	ADD_FATAL("CRITICAL blood level [blood_percent]%.")
+		// 	ADD_INFO("CRITICAL blood level [blood_percent] %, [target.blood_volume] cl, type: [blood_type]")
+		// else
+		// 	ADD_INFO_COLOR("Blood level [blood_percent] %, [target.blood_volume] cl, type: [blood_type]", "grey")
 
 	data["cyber_mods"] = list()
-	for(var/obj/item/organ/internal/O in H.internal_organs)
+	for(var/obj/item/organ/internal/O in target.internal_organs)
 		if(O.is_robotic())
 			data["cyber_mods"] += "[O.name]"
 
-	if(H.gene_stability < 40)
+	if(target.gene_stability < 40)
 		ADD_WARNING("Subject's genes are quickly breaking down!")
-	else if(H.gene_stability < 70)
+	else if(target.gene_stability < 70)
 		ADD_WARNING("Subject's genes are showing signs of spontaneous breakdown.")
-	else if(H.gene_stability < 85)
+	else if(target.gene_stability < 85)
 		ADD_INFO("Subject's genes are showing minor signs of instability.")
 	else
-		ADD_INFO("Subject's genes are stable.")
+		ADD_INFO_COLOR("Subject's genes are stable.", "grey")
 
-	if(HAS_TRAIT(H, TRAIT_HUSK))
-		ADD_WARNING("Subject is husked.")
-		ADD_INFO("Subject is husked. Application of synthflesh is recommended.")
+	if(HAS_TRAIT(target, TRAIT_HUSK))
+		ADD_FATAL("Subject is husked.")
+		ADD_WARNING("Subject is husked. Application of synthflesh is recommended.")
 
-	if(H.radiation > RAD_MOB_SAFE)
-		ADD_INFO("Subject is irradiated.")
+	if(target.radiation > RAD_MOB_SAFE)
+		ADD_INFO_COLOR("Subject is irradiated.", "green")
 
+	data["local_dam"] = list()
+	var/list/damaged = target.get_damaged_organs(TRUE, TRUE)
+	for(var/obj/item/organ/external/org in damaged)
+		data["local_dam"] += list(list("name" = capitalize(org.name), "brute" = org.brute_dam, "burn" = org.burn_dam))
+
+	data["world_time"] = world.time
 	hard_data = data
-	return data
+	return hard_data
 
-/datum/health_scan/human
+/datum/ui_module/health_scan/proc/register_patient(mob/living/new_target)
+	target = new_target
+	hard_data = null
+	update_data()
+	SStgui.update_uis(src)
 
-/datum/health_scan/cyborg
+/datum/ui_module/health_scan/human
+/datum/ui_module/health_scan/cyborg
 
 #undef ADD_WARNING
 #undef ADD_INFO

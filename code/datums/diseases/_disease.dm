@@ -1,10 +1,6 @@
 
 #define VIRUS_SYMPTOM_LIMIT	6
 
-//Visibility Flags
-#define HIDDEN_SCANNER	1
-#define HIDDEN_PANDEMIC	2
-
 //Disease Flags
 #define CURABLE		1
 #define CAN_CARRY	2

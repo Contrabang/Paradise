@@ -186,8 +186,21 @@ const KitchenSinkProgressBar = (props, context) => {
       </ProgressBar>
       <Box mt={1}>
         <Button content="-0.1" onClick={() => setProgress(progress - 0.1)} />
+        <Button content="Set 0" onClick={() => setProgress(0)} />
         <Button content="+0.1" onClick={() => setProgress(progress + 0.1)} />
       </Box>
+      <ProgressBar.Negative
+        ranges={{
+          good: [0.5, Infinity],
+          bad: [-Infinity, -0.5],
+          average: [-0.5, 0.5],
+        }}
+        minValue={-1}
+        maxValue={1}
+        value={progress}
+      >
+        Value: {Number(progress).toFixed(1)}
+      </ProgressBar.Negative>
     </Box>
   );
 };

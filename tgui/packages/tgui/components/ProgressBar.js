@@ -13,12 +13,16 @@ export const ProgressBar = (props) => {
     ranges = {},
     children,
     fractionDigits = 0,
+    reversed = false,
+    makeDefaultNegative = false,
     ...rest
   } = props;
+  const contentDefaultMult = makeDefaultNegative ? -100 : 100
   const scaledValue = scale(value, minValue, maxValue);
   const hasContent = children !== undefined;
   const effectiveColor =
     color || keyOfMatchingRange(value, ranges) || 'default';
+  const amount = clamp01(scaledValue) * 100
   return (
     <div
       className={classes([
@@ -32,13 +36,14 @@ export const ProgressBar = (props) => {
       <div
         className="ProgressBar__fill ProgressBar__fill--animated"
         style={{
-          width: clamp01(scaledValue) * 100 + '%',
+          width: amount + '%',
+          left: reversed ? `${100 - amount}%` : 0,
         }}
       />
       <div className="ProgressBar__content">
         {hasContent
           ? children
-          : toFixed(scaledValue * 100, fractionDigits) + '%'}
+          : toFixed(scaledValue * contentDefaultMult, fractionDigits) + '%'}
       </div>
     </div>
   );
@@ -87,3 +92,27 @@ ProgressBarCountdown.defaultProps = {
 };
 
 ProgressBar.Countdown = ProgressBarCountdown;
+
+// Has some flaws with swapping between negative and positive, but mostly works.
+export const ProgressBarNegative = (props, context) => {
+  const {
+    minValue = -1,
+    swapValue = 0,
+    maxValue = 1,
+    reversed = false,
+    children,
+    ...rest
+  } = props;
+
+  if(props.value < swapValue){
+    return (
+      <ProgressBar minValue={swapValue} maxValue={minValue} reversed={!reversed} makeDefaultNegative {...rest}  />
+    )
+  }
+  return (
+    <ProgressBar minValue={swapValue} maxValue={maxValue} reversed={reversed} {...rest} />
+  )
+  // }
+}
+
+ProgressBar.Negative = ProgressBarNegative;
