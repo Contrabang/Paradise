@@ -14,4 +14,5 @@
 	desc = "A [name] drawn in crayon."
 
 	icon_state = type
-	color = main
+	if(!color || main != "#FFFFFF")
+		color = main
