@@ -24,6 +24,17 @@
 		/obj/item/documents
 	)
 
+/obj/structure/filingcabinet/Initialize(mapload)
+	. = ..()
+	if(mapload)
+		// same reasoning as closets
+		addtimer(CALLBACK(src, PROC_REF(take_contents)), 0)
+
+/obj/structure/filingcabinet/proc/take_contents()
+	for(var/obj/item/I in get_turf(src))
+		if(is_type_in_list(I, accepted_items))
+			I.forceMove(src)
+
 /obj/structure/filingcabinet/chestdrawer
 	name = "chest drawer"
 	icon_state = "chestdrawer"
@@ -33,16 +44,8 @@
 	desc = "A large drawer for holding autopsy reports."
 
 /// not changing the path to avoid unecessary map issues, but please don't name stuff like this in the future -Pete
-/obj/structure/filingcabinet/filingcabinet
+/obj/structure/filingcabinet/light
 	icon_state = "tallcabinet"
-
-
-/obj/structure/filingcabinet/Initialize(mapload)
-	..()
-	for(var/obj/item/I in loc)
-		if(istype(I, /obj/item/paper) || istype(I, /obj/item/folder) || istype(I, /obj/item/photo))
-			I.loc = src
-
 
 /obj/structure/filingcabinet/attackby(obj/item/O, mob/user, params)
 	if(insert(O, user))

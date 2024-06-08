@@ -6449,7 +6449,7 @@
 	},
 /area/station/supply/storage)
 "azH" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /obj/machinery/alarm/directional/north,
 /obj/effect/turf_decal/delivery/hollow,
 /turf/simulated/floor/plasteel{
@@ -6458,7 +6458,7 @@
 	},
 /area/station/supply/storage)
 "azI" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /obj/effect/turf_decal/delivery/hollow,
 /turf/simulated/floor/plasteel{
 	dir = 1;
@@ -11985,7 +11985,7 @@
 /obj/machinery/light{
 	dir = 8
 	},
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /obj/machinery/light_switch{
 	dir = 4;
 	name = "west bump";
@@ -16973,7 +16973,7 @@
 	},
 /area/station/supply/office)
 "bba" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /turf/simulated/floor/plasteel{
 	icon_state = "brown"
 	},

@@ -18371,7 +18371,7 @@
 	},
 /area/station/supply/office)
 "bpN" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /obj/item/radio/intercom{
 	name = "south bump";
 	pixel_y = -28
@@ -42338,7 +42338,7 @@
 	},
 /area/station/service/chapel)
 "cXY" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /obj/machinery/camera{
 	c_tag = "Medbay Psychology Office";
 	dir = 1
@@ -67422,7 +67422,7 @@
 	},
 /area/station/engineering/atmos)
 "mOV" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/tall,
 /turf/simulated/floor/plasteel{
 	icon_state = "brown"
 	},

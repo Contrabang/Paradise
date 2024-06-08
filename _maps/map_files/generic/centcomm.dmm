@@ -10097,7 +10097,7 @@
 	pixel_x = 32;
 	req_access_txt = "114"
 	},
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /turf/simulated/floor/plasteel{
 	dir = 5;
 	icon_state = "darkred"

@@ -9076,7 +9076,7 @@
 /turf/simulated/floor/plating,
 /area/station/maintenance/fpmaint2)
 "aDA" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /obj/effect/spawner/random_spawners/cobweb_left_rare,
 /turf/simulated/floor/plating,
 /area/station/maintenance/fpmaint2)
@@ -22685,7 +22685,7 @@
 /turf/simulated/floor/plasteel,
 /area/station/command/bridge)
 "bqY" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /turf/simulated/floor/plasteel,
 /area/station/command/bridge)
 "brb" = (
@@ -25901,7 +25901,7 @@
 /turf/simulated/floor/wood,
 /area/station/command/meeting_room)
 "bCE" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /turf/simulated/floor/plasteel{
 	dir = 4;
 	icon_state = "arrival"
@@ -30452,7 +30452,7 @@
 /turf/simulated/floor/plasteel,
 /area/station/supply/storage)
 "bTv" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/light,
 /turf/simulated/floor/plasteel,
 /area/station/supply/office)
 "bTw" = (
