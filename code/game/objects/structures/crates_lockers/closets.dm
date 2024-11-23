@@ -50,6 +50,8 @@
 	var/has_opened_overlay = TRUE
 	/// Whether this closet uses a door overlay for when it is closed
 	var/has_closed_overlay = TRUE
+	/// The percent chance for a projectile to fly past this object
+	var/projectile_pass_chance = 50
 
 // Please dont override this unless you absolutely have to
 /obj/structure/closet/Initialize(mapload)
@@ -170,7 +172,9 @@
 /obj/structure/closet/CanPass(atom/movable/mover, turf/target)
 	if(wall_mounted)
 		return TRUE
-	return (!density)
+	. = !density
+	if(isprojectile(mover))
+		. |= prob(projectile_pass_chance) // even if this fails, it should still fly over open closets
 
 /obj/structure/closet/proc/can_open()
 	if(welded)

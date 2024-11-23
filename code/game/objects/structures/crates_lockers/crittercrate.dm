@@ -12,6 +12,7 @@
 	close_sound = 'sound/machines/wooden_closet_close.ogg'
 	open_sound_volume = 25
 	close_sound_volume = 50
+	projectile_pass_chance = 0
 
 /obj/structure/closet/critter/can_open()
 	if(welded)
