@@ -13,6 +13,8 @@
 	 * turf in the world */
 	if(SSair && SSair.initialized)
 		SSair.setup_turfs(bot_left, top_right)
+	log_debug("Unfreezing atmos.")
+	set_zlevel_freeze(bot_left.z, FALSE)
 	log_debug("\tTook [stop_watch(subtimer)]s")
 
 	subtimer = start_watch()
@@ -39,3 +41,11 @@
 		for(var/otherthing in T)
 			qdel(otherthing)
 		T.ChangeTurf(T.baseturf)
+
+/datum/milla_safe/freeze_z_level
+
+// Ensures that atmos is frozen before loading
+/datum/milla_safe/freeze_z_level/on_run(z, await_pointer)
+	log_debug("Freezing atmos.")
+	set_zlevel_freeze(z, TRUE)
+	*await_pointer = TRUE
