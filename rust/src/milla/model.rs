@@ -413,6 +413,7 @@ impl ZLevel {
         ZLevel {
             tiles: unbuilt.into_boxed_slice().try_into().unwrap(),
             active_pressure_chunks: HashSet::new(),
+			frozen: false,
         }
     }
 
