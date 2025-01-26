@@ -401,7 +401,7 @@ impl From<&InterestingTile> for Vec<ByondValue> {
 pub(crate) struct ZLevel {
     tiles: Box<[Tile; MAP_SIZE * MAP_SIZE]>,
     pub(crate) active_pressure_chunks: HashSet<(u8, u8)>,
-	pub(crate) frozen: bool,
+    pub(crate) frozen: bool,
 }
 
 impl ZLevel {
