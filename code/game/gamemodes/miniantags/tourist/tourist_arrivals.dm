@@ -27,12 +27,13 @@
 				antag_count++
 				continue
 	max_antag = round(crew_count / 10, 1) + 1
-	if(SSticker && istype(SSticker.mode, /datum/game_mode/extended))
+	if(SSticker && !length(GLOB.antagonists))
 		chance = 100
 
 /datum/event/tourist_arrivals/start()
 	// Let's just avoid trouble, sending people into those is probably bad.
-	if(GAMEMODE_IS_CULT || GAMEMODE_IS_WIZARD || GAMEMODE_IS_NUCLEAR)
+	var/datum/game_mode/dynamic/dynamic = SSticker.mode
+	if(GAMEMODE_IS_WIZARD || GAMEMODE_IS_NUCLEAR || (istype(dynamic) && dynamic.ruleset_in_play(/datum/ruleset/team/cult)))
 		var/datum/event_container/EC = SSevents.event_containers[EVENT_LEVEL_MODERATE]
 		EC.next_event_time = world.time + 1 MINUTES
 		log_debug("Tourist Arrivals roll canceled due to gamemode. Rolling another midround in 60 seconds.")

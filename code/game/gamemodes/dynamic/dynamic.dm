@@ -172,6 +172,12 @@ GLOBAL_LIST_EMPTY(dynamic_forced_rulesets)
 		ruleset.declare_completion()
 	. = ..()
 
+/datum/game_mode/dynamic/proc/ruleset_in_play(ruleset_type)
+	for(var/datum/ruleset/ruleset in (rulesets + implied_rulesets))
+		if(ruleset.type == ruleset_type)
+			return TRUE
+	return FALSE
+
 /proc/log_dynamic(text)
 	log_game("Dynamic: [text]")
 	var/datum/game_mode/dynamic/dynamic = SSticker.mode

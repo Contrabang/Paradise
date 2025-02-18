@@ -683,3 +683,137 @@
 
 /datum/game_mode/proc/on_mob_cryo(mob/sleepy_mob, obj/machinery/cryopod/cryopod)
 	return
+
+/datum/game_mode/proc/get_cult_team()
+	if(!cult_team)
+		new /datum/team/cult() // assignment happens in create_team()
+	return cult_team
+
+/datum/game_mode/proc/auto_declare_completion_vampire()
+	if(!length(vampires))
+		return
+
+	var/list/text = list("<FONT size = 2><B>The vampires were:</B></FONT>")
+	for(var/datum/mind/vampire in vampires)
+		var/traitorwin = TRUE
+		var/datum/antagonist/vampire/V = vampire.has_antag_datum(/datum/antagonist/vampire)
+		text += "<br>[vampire.get_display_key()] was [vampire.name] ("
+		if(vampire.current)
+			if(vampire.current.stat == DEAD)
+				text += "died"
+			else
+				text += "survived"
+				if(V.subclass)
+					text += " as a [V.subclass.name]"
+		else
+			text += "body destroyed"
+		text += ")"
+
+		var/list/all_objectives = vampire.get_all_objectives(include_team = FALSE)
+
+		if(length(all_objectives))//If the traitor had no objectives, don't need to process this.
+			var/count = 1
+			for(var/datum/objective/objective in all_objectives)
+				if(objective.check_completion())
+					text += "<br><B>Objective #[count]</B>: [objective.explanation_text] <font color='green'><B>Success!</B></font>"
+					if(istype(objective, /datum/objective/steal))
+						var/datum/objective/steal/S = objective
+						SSblackbox.record_feedback("nested tally", "vampire_steal_objective", 1, list("Steal [S.steal_target]", "SUCCESS"))
+					else
+						SSblackbox.record_feedback("nested tally", "vampire_objective", 1, list("[objective.type]", "SUCCESS"))
+				else
+					text += "<br><B>Objective #[count]</B>: [objective.explanation_text] <font color='red'>Fail.</font>"
+					if(istype(objective, /datum/objective/steal))
+						var/datum/objective/steal/S = objective
+						SSblackbox.record_feedback("nested tally", "vampire_steal_objective", 1, list("Steal [S.steal_target]", "FAIL"))
+					else
+						SSblackbox.record_feedback("nested tally", "vampire_objective", 1, list("[objective.type]", "FAIL"))
+					traitorwin = FALSE
+				count++
+
+		var/special_role_text
+		if(vampire.special_role)
+			special_role_text = lowertext(vampire.special_role)
+		else
+			special_role_text = "antagonist"
+
+		if(traitorwin)
+			text += "<br><font color='green'><B>The [special_role_text] was successful!</B></font>"
+			SSblackbox.record_feedback("tally", "vampire_success", 1, "SUCCESS")
+		else
+			text += "<br><font color='red'><B>The [special_role_text] has failed!</B></font>"
+			SSblackbox.record_feedback("tally", "vampire_success", 1, "FAIL")
+	return text.Join("")
+
+/datum/game_mode/proc/auto_declare_completion_enthralled()
+	if(!length(vampire_enthralled))
+		return
+
+	var/list/text = list("<FONT size = 2><B>The Enthralled were:</B></FONT>")
+	for(var/datum/mind/mind in vampire_enthralled)
+		text += "<br>[mind.get_display_key()] was [mind.name] ("
+		if(mind.current)
+			if(mind.current.stat == DEAD)
+				text += "died"
+			else
+				text += "survived"
+			if(mind.current.real_name != mind.name)
+				text += " as [mind.current.real_name]"
+		else
+			text += "body destroyed"
+		text += ")"
+	return text.Join("")
+
+/datum/game_mode/proc/auto_declare_completion_changeling()
+	if(length(changelings))
+		var/list/text = list("<FONT size = 3><B>The changelings were:</B></FONT>")
+		for(var/datum/mind/changeling in changelings)
+			var/changelingwin = TRUE
+
+			text += "<br>[changeling.get_display_key()] was [changeling.name] ("
+			if(changeling.current)
+				if(changeling.current.stat == DEAD)
+					text += "died"
+				else
+					text += "survived"
+				if(changeling.current.real_name != changeling.name)
+					text += " as [changeling.current.real_name]"
+			else
+				text += "body destroyed"
+				changelingwin = FALSE
+			text += ")"
+
+			//Removed sanity if(changeling) because we -want- a runtime to inform us that the changelings list is incorrect and needs to be fixed.
+			var/datum/antagonist/changeling/cling = changeling.has_antag_datum(/datum/antagonist/changeling)
+			text += "<br><b>Changeling ID:</b> [cling.changelingID]."
+			text += "<br><b>Genomes Extracted:</b> [cling.absorbed_count]"
+
+			var/list/all_objectives = changeling.get_all_objectives(include_team = FALSE)
+
+			if(length(all_objectives))
+				var/count = 1
+				for(var/datum/objective/objective in all_objectives)
+					if(objective.check_completion())
+						text += "<br><B>Objective #[count]</B>: [objective.explanation_text] <font color='green'><B>Success!</B></font>"
+						if(istype(objective, /datum/objective/steal))
+							var/datum/objective/steal/S = objective
+							SSblackbox.record_feedback("nested tally", "changeling_steal_objective", 1, list("Steal [S.steal_target]", "SUCCESS"))
+						else
+							SSblackbox.record_feedback("nested tally", "changeling_objective", 1, list("[objective.type]", "SUCCESS"))
+					else
+						text += "<br><B>Objective #[count]</B>: [objective.explanation_text] <font color='red'>Fail.</font>"
+						if(istype(objective, /datum/objective/steal))
+							var/datum/objective/steal/S = objective
+							SSblackbox.record_feedback("nested tally", "changeling_steal_objective", 1, list("Steal [S.steal_target]", "FAIL"))
+						else
+							SSblackbox.record_feedback("nested tally", "changeling_objective", 1, list("[objective.type]", "FAIL"))
+						changelingwin = 0
+					count++
+
+			if(changelingwin)
+				text += "<br><font color='green'><B>The changeling was successful!</B></font>"
+				SSblackbox.record_feedback("tally", "changeling_success", 1, "SUCCESS")
+			else
+				text += "<br><font color='red'><B>The changeling has failed.</B></font>"
+				SSblackbox.record_feedback("tally", "changeling_success", 1, "FAIL")
+		return text.Join("")

@@ -15,7 +15,7 @@
 #define TARGET_CRYOING					14
 
 //gamemode istype helpers
-#define GAMEMODE_IS_CULT		(SSticker && istype(SSticker.mode, /datum/game_mode/cult))
+// #define GAMEMODE_IS_CULT		(SSticker && istype(SSticker.mode, /datum/game_mode/cult))
 #define GAMEMODE_IS_HEIST		(SSticker && istype(SSticker.mode, /datum/game_mode/heist))
 #define GAMEMODE_IS_NUCLEAR		(SSticker && istype(SSticker.mode, /datum/game_mode/nuclear))
 #define GAMEMODE_IS_REVOLUTION	(SSticker && istype(SSticker.mode, /datum/game_mode/revolution))

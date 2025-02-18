@@ -91,7 +91,7 @@
 		return antag_cost * antag_amount // shitty refund for now
 
 	if(GLOB.configuration.gamemode.prevent_mindshield_antags)
-		banned_jobs += protected_jobs
+		banned_jobs |= protected_jobs
 
 	shuffle_inplace(possible_antags)
 	for(var/datum/mind/antag as anything in possible_antags)
@@ -171,6 +171,24 @@
 		antag.add_antag_datum(antagonist_type)
 
 	log_dynamic("Latespawned [late_antag_amount] [name]s.")
+
+/datum/ruleset/proc/admin_spawn(amount)
+	if(!check_rights(R_ADMIN|R_MOD))
+		return
+	if(GLOB.configuration.gamemode.prevent_mindshield_antags)
+		banned_jobs |= protected_jobs
+	var/list/datum/mind/possible_antags = get_latejoin_players()
+	if(!length(possible_antags))
+		to_chat(usr, "<span class='warning'>Unfortunately there weren't enough candidates available.</span>")
+		return
+	log_admin("[key_name(usr)] tried making [amount] [name]\s with One-Click-Antag")
+	message_admins("[key_name_admin(usr)] tried making [amount] [name]\s with One-Click-Antag")
+	for(var/i in 1 to amount)
+		var/datum/mind/antag = pick_n_take(possible_antags)
+		antag.add_antag_datum(antagonist_type)
+		message_admins("[key_name(usr)] made [key_name_admin(antag)] a [name] with One-Click-Antag")
+
+	log_dynamic("Admin-spawned [amount] [name]s.")
 
 /datum/ruleset/proc/automatic_deduct(budget)
 	. = antag_cost * antag_amount

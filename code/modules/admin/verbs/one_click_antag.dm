@@ -43,68 +43,13 @@
 	else
 		return TRUE
 
-/datum/admins/proc/makeTraitors()
-	var/datum/game_mode/traitor/temp = new
-
-	if(GLOB.configuration.gamemode.prevent_mindshield_antags)
-		temp.restricted_jobs += temp.protected_jobs
-
-	var/list/mob/living/carbon/human/candidates = list()
-	var/mob/living/carbon/human/H = null
-
-	var/antnum = input(owner, "How many traitors you want to create? Enter 0 to cancel","Amount:", 0) as num
+/datum/admins/proc/make_antags(type)
+	var/datum/ruleset/temp = new type
+	var/antnum = input(owner, "How many [temp.name]s you want to create? Enter 0 to cancel.","Amount:", 0) as num
 	if(!antnum || antnum <= 0)
 		return
-	log_admin("[key_name(owner)] tried making [antnum] traitors with One-Click-Antag")
-	message_admins("[key_name_admin(owner)] tried making [antnum] traitors with One-Click-Antag")
-
-	for(var/mob/living/carbon/human/applicant in GLOB.player_list)
-		if(CandCheck(ROLE_TRAITOR, applicant, temp))
-			candidates += applicant
-
-	if(length(candidates))
-		var/numTraitors = min(length(candidates), antnum)
-
-		for(var/i = 0, i<numTraitors, i++)
-			H = pick(candidates)
-			H.mind.make_Traitor()
-			candidates.Remove(H)
-			message_admins("[key_name(owner)] made [key_name_admin(H)] a Traitor with One-Click-Antag")
-
-		return TRUE
-	return FALSE
-
-
-/datum/admins/proc/makeChangelings()
-
-	var/datum/game_mode/changeling/temp = new
-	if(GLOB.configuration.gamemode.prevent_mindshield_antags)
-		temp.restricted_jobs += temp.protected_jobs
-
-	var/list/mob/living/carbon/human/candidates = list()
-	var/mob/living/carbon/human/H = null
-
-	var/antnum = input(owner, "How many changelings you want to create? Enter 0 to cancel.","Amount:", 0) as num
-	if(!antnum || antnum <= 0)
-		return
-	log_admin("[key_name(owner)] tried making [antnum] changelings with One-Click-Antag")
-	message_admins("[key_name_admin(owner)] tried making [antnum] changelings with One-Click-Antag")
-
-	for(var/mob/living/carbon/human/applicant in GLOB.player_list)
-		if(CandCheck(ROLE_CHANGELING, applicant, temp))
-			candidates += applicant
-
-	if(length(candidates))
-		var/numChangelings = min(length(candidates), antnum)
-
-		for(var/i = 0, i<numChangelings, i++)
-			H = pick(candidates)
-			H.mind.add_antag_datum(/datum/antagonist/changeling)
-			candidates.Remove(H)
-			message_admins("[key_name(owner)] made [key_name_admin(H)] a Changeling with One-Click-Antag")
-
-		return TRUE
-	return FALSE
+	temp.admin_spawn(antnum)
+	qdel(temp)
 
 /datum/admins/proc/makeRevs()
 
@@ -158,38 +103,6 @@
 		dust_if_respawnable(selected)
 		return TRUE
 	return FALSE
-
-
-/datum/admins/proc/makeCult()
-
-	var/datum/game_mode/cult/temp = new
-	if(GLOB.configuration.gamemode.prevent_mindshield_antags)
-		temp.restricted_jobs += temp.protected_jobs
-
-	var/list/mob/living/carbon/human/candidates = list()
-	var/mob/living/carbon/human/H = null
-	var/antnum = input(owner, "How many cultists do you want to create? Enter 0 to cancel.", "Amount:", 0) as num
-	if(!antnum || antnum <= 0)
-		return
-	log_admin("[key_name(owner)] tried making a Cult with One-Click-Antag")
-	message_admins("[key_name_admin(owner)] tried making a Cult with One-Click-Antag")
-
-	for(var/mob/living/carbon/human/applicant in GLOB.player_list)
-		if(CandCheck(ROLE_CULTIST, applicant, temp))
-			candidates += applicant
-
-	if(!length(candidates))
-		return FALSE
-
-	for(var/I in 1 to antnum)
-		if(!length(candidates))
-			return
-		H = pick_n_take(candidates)
-
-		var/datum/antagonist/cultist/cultist = H.mind.add_antag_datum(/datum/antagonist/cultist)
-		cultist.equip_roundstart_cultist(H)
-		message_admins("[key_name(owner)] made [key_name_admin(H)] a Cultist with One-Click-Antag")
-	return TRUE
 
 //Abductors
 /datum/admins/proc/makeAbductorTeam()
@@ -262,62 +175,6 @@
 	new_syndicate_commando.equip_syndicate_commando(syndicate_leader_selected)
 
 	return new_syndicate_commando
-
-/datum/admins/proc/makeVampires()
-
-	var/datum/game_mode/vampire/temp = new
-	if(GLOB.configuration.gamemode.prevent_mindshield_antags)
-		temp.restricted_jobs += temp.protected_jobs
-
-	var/list/mob/living/carbon/human/candidates = list()
-	var/mob/living/carbon/human/H = null
-
-	var/antnum = input(owner, "How many vampires you want to create? Enter 0 to cancel","Amount:", 0) as num
-	if(!antnum || antnum <= 0)
-		return
-
-	log_admin("[key_name(owner)] tried making [antnum] Vampires with One-Click-Antag")
-	message_admins("[key_name_admin(owner)] tried making [antnum] Vampires with One-Click-Antag")
-
-	for(var/mob/living/carbon/human/applicant in GLOB.player_list)
-		if(CandCheck(ROLE_VAMPIRE, applicant, temp))
-			candidates += applicant
-
-	if(length(candidates))
-		var/numVampires = min(length(candidates), antnum)
-
-		for(var/i = 0, i<numVampires, i++)
-			H = pick(candidates)
-			H.mind.make_vampire()
-			message_admins("[key_name(owner)] made [key_name_admin(H)] a Vampire with One-Click-Antag")
-			candidates.Remove(H)
-
-		return TRUE
-	return FALSE
-
-/datum/admins/proc/makeMindflayers()
-	var/datum/game_mode/vampire/temp = new()
-
-	if(GLOB.configuration.gamemode.prevent_mindshield_antags)
-		temp.restricted_jobs += temp.protected_jobs
-
-	var/input_num = input(owner, "How many Mindflayers you want to create? Enter 0 to cancel","Amount:", 0) as num|null
-	if(input_num <= 0 || isnull(input_num))
-		qdel(temp)
-		return FALSE
-
-	log_admin("[key_name(owner)] tried making [input_num] Mindflayers with One-Click-Antag")
-	message_admins("[key_name_admin(owner)] tried making [input_num] Mindflayers with One-Click-Antag")
-	var/list/possible_mindflayers = temp.get_players_for_role(ROLE_MIND_FLAYER, FALSE, "Machine")
-	var/num_mindflayers = min(length(possible_mindflayers), input_num)
-	if(!num_mindflayers)
-		return FALSE
-	for(var/i in 1 to num_mindflayers)
-		var/datum/mind/flayer = pick_n_take(possible_mindflayers)
-		flayer.make_mind_flayer()
-		message_admins("[key_name(owner)] made [key_name_admin(flayer)] a Mindflayer with One-Click-Antag")
-	qdel(temp)
-	return TRUE
 
 /datum/admins/proc/makeEventCharacters()
 	var/list/mob/living/carbon/human/candidates = list()

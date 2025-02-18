@@ -52,8 +52,8 @@
 GLOBAL_LIST_INIT(special_roles, list(
 	ROLE_ABDUCTOR = /datum/game_mode/abduction, 		// Abductor
 	ROLE_BLOB, 											// Blob
-	ROLE_CHANGELING = /datum/game_mode/changeling, 		// Changeling
-	ROLE_CULTIST = /datum/game_mode/cult, 				// Cultist
+	ROLE_CHANGELING, 									// Changeling
+	ROLE_CULTIST, 										// Cultist
 	ROLE_GUARDIAN, 										// Guardian
 	ROLE_MORPH, 										// Morph
 	ROLE_OPERATIVE = /datum/game_mode/nuclear, 			// Operative
@@ -64,9 +64,9 @@ GLOBAL_LIST_INIT(special_roles, list(
 	ROLE_DEMON, 										// Slaguther demon
 	ROLE_ELITE,											// Lavaland Elite
 	ROLE_TRADER, 										// Trader
-	ROLE_TRAITOR = /datum/game_mode/traitor, 			// Traitor
+	ROLE_TRAITOR, 										// Traitor
 	ROLE_TOURIST,										// Tourist
-	ROLE_VAMPIRE = /datum/game_mode/vampire, 			// Vampire
+	ROLE_VAMPIRE, 										// Vampire
 	ROLE_ALIEN, 										// Xenomorph
 	ROLE_WIZARD = /datum/game_mode/wizard, 				// Wizard
 	ROLE_MIND_FLAYER,
