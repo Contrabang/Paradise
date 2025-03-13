@@ -141,13 +141,13 @@
 		if(!player.client || (locate(player) in SSafk.afk_players))
 			continue
 		// Not antag-banned and not specific antag banned
-		if(jobban_isbanned(player, ROLE_SYNDICATE) || jobban_isbanned(player, antagonist_type::job_rank))
+		if(jobban_isbanned(player, ROLE_SYNDICATE) || (antagonist_type && jobban_isbanned(player, antagonist_type::job_rank)))
 			continue
 		// Make sure they want to play antag, and that they're not already something (off station or antag)
 		if(player.client.skip_antag || player.mind.offstation_role || player.mind.special_role)
 			continue
 		// Make sure they actually want to be this antagonist
-		if(!(antagonist_type::job_rank in player.client.prefs.be_special))
+		if(antagonist_type && !(antagonist_type::job_rank in player.client.prefs.be_special))
 			continue
 		// Make sure their species CAN be this antagonist
 		if(EXCLUSIVE_OR(player.dna.species.name in banned_species, banned_species_only))

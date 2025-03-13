@@ -177,28 +177,19 @@
 	return new_syndicate_commando
 
 /datum/admins/proc/makeEventCharacters()
-	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
 
 	var/antnum = input(owner, "How many event characters you want to create? Enter 0 to cancel","Amount:", 0) as num
 	if(!antnum || antnum <= 0)
 		return FALSE
 
-	var/datum/game_mode/traitor/temp = new()
+	var/datum/ruleset/temp = new()
 	var/no_mindshields = input(owner, "Avoid mindshielded characters?") in list("Yes", "No", "Cancel")
 	if(no_mindshields == "Cancel")
 		qdel(temp)
 		return FALSE
 	else if(no_mindshields == "Yes")
-		temp.restricted_jobs += temp.protected_jobs
-
-	var/respect_traitor = input(owner, "Require traitor willingness?") in list("Yes", "No", "Cancel")
-	var/role = null
-	if(respect_traitor == "Cancel")
-		qdel(temp)
-		return FALSE
-	else if(respect_traitor == "Yes")
-		role = ROLE_TRAITOR
+		temp.banned_jobs |= temp.protected_jobs
 
 	var/give_objective = input(owner, "Give them a shared custom objective?") in list("Yes", "No", "Cancel")
 	var/objective = null
@@ -213,10 +204,7 @@
 
 	log_admin("[key_name(owner)] tried making [antnum] event characters with One-Click-Antag")
 	message_admins("[key_name_admin(owner)] tried making [antnum] event characters with One-Click-Antag")
-
-	for(var/mob/living/carbon/human/applicant in GLOB.player_list)
-		if(CandCheck(role, applicant, temp))
-			candidates += applicant
+	var/list/mob/living/carbon/human/candidates = temp.get_latejoin_players()
 	qdel(temp)
 
 	if(length(candidates))
