@@ -143,7 +143,7 @@
 
 /datum/game_mode/proc/auto_declare_completion_revolution()
 	var/list/targets = list()
-	if(length(rev_team?.members) || GAMEMODE_IS_REVOLUTION)
+	if(rev_team && length(rev_team.members))
 		var/num_revs = 0
 		var/num_survivors = 0
 		for(var/mob/living/carbon/human/survivor in GLOB.player_list)

@@ -46,6 +46,4 @@
 	ADD_TRAIT(src, TRAIT_NOBREATH, SPECIES_TRAIT)
 
 /mob/living/simple_animal/pet/dog/fox/syndifox/npc_safe(mob/user)
-	if(GAMEMODE_IS_NUCLEAR)
-		return TRUE
-	return FALSE
+	return length(SSticker.mode.syndicates)

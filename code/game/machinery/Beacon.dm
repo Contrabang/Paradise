@@ -73,7 +73,7 @@
 
 /obj/machinery/bluespace_beacon/syndicate/Initialize(mapload)
 	. = ..()
-	if(!GAMEMODE_IS_NUCLEAR && prob(50))
+	if(!length(SSticker.mode.syndicates) && prob(50))
 		enabled = TRUE
 
 /obj/machinery/bluespace_beacon/syndicate/Destroy()

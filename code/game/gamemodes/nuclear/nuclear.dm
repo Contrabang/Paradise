@@ -388,7 +388,7 @@
 
 
 /datum/game_mode/proc/auto_declare_completion_nuclear()
-	if(length(syndicates) || GAMEMODE_IS_NUCLEAR)
+	if(length(syndicates))
 		var/list/text = list("<br><FONT size=3><B>The syndicate operatives were:</B></FONT>")
 
 		var/purchases = ""

@@ -33,7 +33,7 @@
 /datum/event/tourist_arrivals/start()
 	// Let's just avoid trouble, sending people into those is probably bad.
 	var/datum/game_mode/dynamic/dynamic = SSticker.mode
-	if(GAMEMODE_IS_WIZARD || GAMEMODE_IS_NUCLEAR || (istype(dynamic) && dynamic.ruleset_in_play(/datum/ruleset/team/cult)))
+	if(length(SSticker.mode.wizards) || length(SSticker.mode.syndicates) || SSticker.mode.cult_team)
 		var/datum/event_container/EC = SSevents.event_containers[EVENT_LEVEL_MODERATE]
 		EC.next_event_time = world.time + 1 MINUTES
 		log_debug("Tourist Arrivals roll canceled due to gamemode. Rolling another midround in 60 seconds.")

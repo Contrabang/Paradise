@@ -218,9 +218,7 @@
 	ADD_TRAIT(src, TRAIT_NOBREATH, SPECIES_TRAIT)
 
 /mob/living/simple_animal/pet/cat/syndi/npc_safe(mob/user)
-	if(GAMEMODE_IS_NUCLEAR)
-		return TRUE
-	return FALSE
+	return length(SSticker.mode.syndicates)
 
 /mob/living/simple_animal/pet/cat/cak
 	name = "Keeki"
