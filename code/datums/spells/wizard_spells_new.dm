@@ -508,7 +508,8 @@
 	slot_behavior = SLOT_BEHAVIOR_HOLD
 
 /datum/spell/wizard/water_walk
-	// noslip
+	name = "Water Walk"
+	desc = "Allows you to gracefully walk over water and other slippery objects."
 	school = SCHOOL_TRANSMUTATION
 	spell_level = 2
 	slot_behavior = SLOT_BEHAVIOR_HOLD
@@ -519,26 +520,32 @@
 	spell_level = 3
 
 /datum/spell/wizard/fleetfoot
-	// nuka cola speed
+	name = "Fleetfoot"
+	desc = "Temporarily gives the target a small speed boost."
 	school = SCHOOL_TRANSMUTATION
 	spell_level = 3
 	slot_behavior = SLOT_BEHAVIOR_HOLD
 
 /datum/spell/wizard/polymorph
+	name = "Polymorph"
+	desc = "Turn a target into a random animal or creature, until dead or this spell wears off."
 	school = SCHOOL_TRANSMUTATION
 	spell_level = 4
 	slot_behavior = SLOT_BEHAVIOR_HOLD
 
 /datum/spell/wizard/rod
+	// this spell already exists
 	school = SCHOOL_TRANSMUTATION
 	spell_level = 4
 
 /datum/spell/wizard/disintegrate
+	// this spell already exists
 	school = SCHOOL_TRANSMUTATION
 	spell_level = 5
 
 /datum/spell/wizard/haste
-	// makes you click faster
+	name = "Haste"
+	desc = "While active, this spell will allow you to perform twice the actions."
 	school = SCHOOL_TRANSMUTATION
 	spell_level = 5
 	slot_behavior = SLOT_BEHAVIOR_HOLD
