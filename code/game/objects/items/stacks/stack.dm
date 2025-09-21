@@ -10,6 +10,7 @@
  */
 /obj/item/stack
 	origin_tech = "materials=1"
+	new_attack_chain = TRUE
 	/// Whether this stack is a `/cyborg` subtype or not.
 	var/is_cyborg = FALSE
 	/// The storage datum that will be used with this stack. Used only with `/cyborg` type stacks.
@@ -140,8 +141,15 @@
 		return FALSE
 	return TRUE
 
-/obj/item/stack/attack_self__legacy__attackchain(mob/user)
-	ui_interact(user)
+/obj/item/stack/activate_self(mob/user)
+	. = ..()
+	if(.)
+		return .
+
+	if(length(recipes))
+		ui_interact(user)
+		// CTODO this might break shit
+		return FINISH_ATTACK
 
 /obj/item/stack/attack_self_tk(mob/user)
 	ui_interact(user)
@@ -169,13 +177,15 @@
 	if(src && user.machine == src)
 		ui_interact(user)
 
-/obj/item/stack/attackby__legacy__attackchain(obj/item/thing, mob/user, params)
-	if(!can_merge(thing, TRUE))
-		return ..()
+/obj/item/stack/item_interaction(mob/living/user, obj/item/used, list/modifiers)
+	SHOULD_CALL_PARENT(TRUE) // Make sure all stack types try to merge
+	if(!can_merge(used, TRUE))
+		return ..() // this is to just satisfy the SHOULD_CALL_PARENT(TRUE) check
 
-	var/obj/item/stack/material = thing
+	var/obj/item/stack/material = used
 	if(merge(material))
 		to_chat(user, "<span class='notice'>Your [material.name] stack now contains [material.get_amount()] [material.singular_name]\s.</span>")
+		return ITEM_INTERACT_COMPLETE
 
 /obj/item/stack/use(used, check = TRUE)
 	if(check && is_zero_amount(TRUE))

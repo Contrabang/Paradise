@@ -76,11 +76,21 @@
 							"<span class='green'>You apply [src] on [M].</span>")
 		use(1)
 
-/obj/item/stack/medical/attack__legacy__attackchain(mob/living/M, mob/user)
-	return apply(M, user)
+/obj/item/stack/medical/pre_attack(atom/A, mob/living/user, params)
+	. = ..()
+	if(.)
+		return
 
-/obj/item/stack/medical/attack_self__legacy__attackchain(mob/user)
-	return apply(user, user)
+	if(ismob(A) && apply(A, user))
+		return FINISH_ATTACK | MELEE_COOLDOWN_PREATTACK
+
+/obj/item/stack/medical/activate_self(mob/user)
+	. = ..()
+	if(.)
+		return
+
+	if(apply(user, user))
+		return FINISH_ATTACK
 
 /obj/item/stack/medical/proc/heal(mob/living/M, mob/user)
 	var/mob/living/carbon/human/H = M
@@ -134,18 +144,21 @@
 	stop_bleeding = 1800
 	dynamic_icon_state = TRUE
 
-/obj/item/stack/medical/bruise_pack/attackby__legacy__attackchain(obj/item/I, mob/user, params)
-	if(I.sharp)
-		if(get_amount() < 2)
-			to_chat(user, "<span class='warning'>You need at least two gauzes to do this!</span>")
-			return
-		new /obj/item/stack/sheet/cloth(user.drop_location())
-		user.visible_message("[user] cuts [src] into pieces of cloth with [I].", \
-					"<span class='notice'>You cut [src] into pieces of cloth with [I].</span>", \
-					"<span class='italics'>You hear cutting.</span>")
-		use(2)
-	else
-		return ..()
+/obj/item/stack/medical/bruise_pack/item_interaction(mob/living/user, obj/item/used, list/modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(!used.sharp)
+		return
+	if(!use(2))
+		to_chat(user, "<span class='warning'>You need at least two gauzes to do this!</span>")
+		return
+	new /obj/item/stack/sheet/cloth(user.drop_location())
+	user.visible_message("[user] cuts [src] into pieces of cloth with [used].", \
+				"<span class='notice'>You cut [src] into pieces of cloth with [used].</span>", \
+				"<span class='italics'>You hear cutting.</span>")
+	return ITEM_INTERACT_COMPLETE
 
 /obj/item/stack/medical/bruise_pack/apply(mob/living/M, mob/user)
 	if(..())

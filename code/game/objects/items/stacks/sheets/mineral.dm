@@ -311,11 +311,14 @@ GLOBAL_LIST_INIT(sandbag_recipes, list (
 		log_and_set_aflame(user, I)
 	return TRUE
 
-/obj/item/stack/sheet/mineral/plasma/attackby__legacy__attackchain(obj/item/I, mob/living/user, params)
-	if(I.get_heat())
-		log_and_set_aflame(user, I)
-	else
-		return ..()
+/obj/item/stack/sheet/mineral/plasma/item_interaction(mob/living/user, obj/item/used, list/modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(used.get_heat())
+		log_and_set_aflame(user, used)
+		return ITEM_INTERACT_COMPLETE
 
 /obj/item/stack/sheet/mineral/plasma/proc/log_and_set_aflame(mob/user, obj/item/I)
 	var/turf/T = get_turf(src)

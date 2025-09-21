@@ -498,15 +498,17 @@ GLOBAL_LIST_INIT(cardboard_recipes, list (
 		)),
 ))
 
-/obj/item/stack/sheet/cardboard/attackby__legacy__attackchain(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/stamp/clown) && !isstorage(loc))
-		var/atom/droploc = drop_location()
+/obj/item/stack/sheet/cardboard/item_interaction(mob/living/user, obj/item/used, list/modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(istype(used, /obj/item/stamp/clown) && !isstorage(loc))
 		if(use(1))
-			playsound(I, 'sound/items/bikehorn.ogg', 50, TRUE, -1)
+			playsound(used, 'sound/items/bikehorn.ogg', 50, TRUE, -1)
 			to_chat(user, "<span class='notice'>You stamp the cardboard! It's a clown box! Honk!</span>")
-			new/obj/item/storage/box/clown(droploc) //bugfix
-	else
-		. = ..()
+			new/obj/item/storage/box/clown(drop_location())
+			return ITEM_INTERACT_COMPLETE
 
 /// BubbleWrap
 /obj/item/stack/sheet/cardboard
@@ -574,11 +576,11 @@ GLOBAL_LIST_INIT(cult_recipes, list (
 	icon_state = GET_CULT_DATA(runed_metal_icon_state, initial(icon_state))
 	recipes = GLOB.cult_recipes
 
-/obj/item/stack/sheet/runed_metal/attack_self__legacy__attackchain(mob/living/user)
+/obj/item/stack/sheet/runed_metal/ui_interact(mob/user, datum/tgui/ui)
 	if(!IS_CULTIST(user))
 		to_chat(user, "<span class='warning'>Only one with forbidden knowledge could hope to work this metal...</span>")
 		return
-	if(usr.holy_check())
+	if(user.holy_check())
 		return
 	if(!is_level_reachable(user.z))
 		to_chat(user, "<span class='warning'>The energies of this place interfere with the metal shaping!</span>")

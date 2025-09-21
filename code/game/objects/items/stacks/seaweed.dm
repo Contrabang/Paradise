@@ -10,8 +10,9 @@
 	usesound = 'sound/items/deconstruct.ogg'
 	merge_type = /obj/item/stack/seaweed
 
-/obj/item/stack/seaweed/attack_self__legacy__attackchain(mob/user)
-	return
+/obj/item/stack/seaweed/Initialize(mapload)
+	. = ..()
+	RegisterSignal(src, COMSIG_ACTIVATE_SELF, TYPE_PROC_REF(/datum, signal_cancel_activate_self))
 
 /obj/item/stack/seaweed/attack_self_tk()
 	return

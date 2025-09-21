@@ -10,9 +10,15 @@
 	max_amount = 6
 	merge_type = /obj/item/stack/nanopaste
 
-/obj/item/stack/nanopaste/attack__legacy__attackchain(mob/living/M as mob, mob/user as mob)
-	if(!istype(M) || !istype(user))
-		return 0
+/obj/item/stack/nanopaste/pre_attack(atom/A, mob/living/user, params)
+	. = ..()
+	if(.)
+		return
+
+	if(!isliving(A) || !istype(user))
+		return CONTINUE_ATTACK
+	. = FINISH_ATTACK
+	var/mob/living/M = A
 	if(isrobot(M))	//Repairing cyborgs
 		var/mob/living/silicon/robot/R = M
 		if(R.getBruteLoss() || R.getFireLoss())
@@ -32,10 +38,11 @@
 		else
 			to_chat(user, "<span class='notice'>[src] won't work on that.</span>")
 
-/obj/item/stack/nanopaste/afterattack__legacy__attackchain(atom/A, mob/user, proximity_flag)
-	if(!ismecha(A) || user.a_intent == INTENT_HARM || !proximity_flag)
+/obj/item/stack/nanopaste/interact_with_atom(atom/target, mob/living/user, list/modifiers)
+	if(!ismecha(target) || user.a_intent == INTENT_HARM)
 		return
-	var/obj/mecha/mecha = A
+	. = ITEM_INTERACT_COMPLETE
+	var/obj/mecha/mecha = target
 	if((mecha.obj_integrity >= mecha.max_integrity) && !mecha.internal_damage)
 		to_chat(user, "<span class='notice'>[mecha] is at full integrity!</span>")
 		return
@@ -92,11 +99,15 @@
 	energy_type = /datum/robot_storage/energy/medical/nanopaste
 	is_cyborg = TRUE
 
-/obj/item/stack/nanopaste/cyborg/attack__legacy__attackchain(mob/living/M, mob/user)
+/obj/item/stack/nanopaste/cyborg/pre_attack(atom/A, mob/living/user, params)
+	. = ..()
+	if(.)
+		return
+
+	// CTODO this has to go before ..()?
 	if(get_amount() <= 0)
 		to_chat(user, "<span class='warning'>You don't have enough energy to dispense more [name]!</span>")
-	else
-		return ..()
+		return FINISH_ATTACK
 
 /obj/item/stack/nanopaste/cyborg/syndicate
 	energy_type = /datum/robot_storage/energy/medical/nanopaste/syndicate

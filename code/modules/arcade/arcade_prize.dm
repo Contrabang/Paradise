@@ -83,8 +83,9 @@
 	w_class = WEIGHT_CLASS_TINY
 	max_amount = 9999	//Dang that's a lot of tickets
 
-/obj/item/stack/tickets/attack_self__legacy__attackchain(mob/user as mob)
-	return
+/obj/item/stack/tickets/Initialize(mapload)
+	. = ..()
+	RegisterSignal(src, COMSIG_ACTIVATE_SELF, TYPE_PROC_REF(/datum, signal_cancel_activate_self)) // I hate this design pattern
 
 /obj/item/stack/tickets/update_icon_state()
 	switch(get_amount())

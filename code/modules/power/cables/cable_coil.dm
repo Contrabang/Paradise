@@ -71,26 +71,34 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe/cable_restrain
 		. += "A coil of power cables."
 
 //you can use wires to heal robotics
-/obj/item/stack/cable_coil/attack__legacy__attackchain(mob/M, mob/user)
-	if(!ishuman(M))
-		return ..()
-	var/mob/living/carbon/human/H = M
-	var/obj/item/organ/external/S = H.bodyparts_by_name[user.zone_selected]
+/obj/item/stack/cable_coil/pre_attack(atom/target, mob/living/user, params)
+	. = ..()
+	if(.)
+		return .
+	if(!ishuman())
+		return CONTINUE_ATTACK
 
-	if(!S && ismachineperson(M) && user.a_intent == INTENT_HELP)
-		to_chat(user, "<span class='notice'>[M.p_they(TRUE)] [M.p_are()] missing that limb!</span>")
+	return heal_robo(target, user)
+
+/obj/item/stack/cable_coil/proc/heal_robo(mob/living/carbon/human/target, mob/user)
+	var/obj/item/organ/external/S = target.bodyparts_by_name[user.zone_selected]
+
+	. = FINISH_ATTACK|MELEE_COOLDOWN_PREATTACK
+	if(!S && ismachineperson(target) && user.a_intent == INTENT_HELP)
+		to_chat(user, "<span class='notice'>[target.p_they(TRUE)] [target.p_are()] missing that limb!</span>")
 		return
 
 	if(!S?.is_robotic() || user.a_intent != INTENT_HELP || S.open == ORGAN_SYNTHETIC_OPEN)
-		return ..()
+		return CONTINUE_ATTACK
+
 	if(S.burn_dam > ROBOLIMB_SELF_REPAIR_CAP)
 		to_chat(user, "<span class='danger'>The damage is far too severe to patch over externally.</span>")
 		return
 	if(!S.burn_dam)
 		to_chat(user, "<span class='notice'>Nothing to fix!</span>")
 		return
-	if(H == user)
-		if(!do_mob(user, H, 10))
+	if(target == user)
+		if(!do_mob(user, target, 10))
 			return FALSE
 	var/cable_used = 0
 	var/childlist
@@ -116,8 +124,8 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe/cable_restrain
 			use(1)
 			cable_used += 1
 			E.heal_damage(0, HEALPERCABLE, 0, TRUE)
-		H.UpdateDamageIcon()
-		user.visible_message("<span class='alert'>[user] repairs some burn damage on [M]'s [E.name] with [src].</span>")
+		target.UpdateDamageIcon()
+		user.visible_message("<span class='alert'>[user] repairs some burn damage on [target]'s [E.name] with [src].</span>")
 	return TRUE
 
 /obj/item/stack/cable_coil/split()
@@ -128,23 +136,24 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe/cable_restrain
 // Items usable on a cable coil :
 //   - Wirecutters : cut them duh !
 //   - Cable coil : merge cables
-/obj/item/stack/cable_coil/attackby__legacy__attackchain(obj/item/W, mob/user)
+/obj/item/stack/cable_coil/item_interaction(mob/living/user, obj/item/used, list/modifiers)
 	. = ..()
-	if(istype(W, /obj/item/stack/cable_coil))
-		var/obj/item/stack/cable_coil/C = W
-		// Cable merging is handled by parent proc
-		if(C.get_amount() >= MAXCOIL)
-			to_chat(user, "The coil is as long as it will get.")
-			return
-		if((C.get_amount() + get_amount() <= MAXCOIL))
-			to_chat(user, "You join the cable coils together.")
-			return
-		else
-			to_chat(user, "You transfer [get_amount_transferred()] length\s of cable from one coil to the other.")
-			return
+	// CTODO, isnt this already done by merging?
+	// if(istype(W, /obj/item/stack/cable_coil))
+	// 	var/obj/item/stack/cable_coil/C = W
+	// 	// Cable merging is handled by parent proc
+	// 	if(C.get_amount() >= MAXCOIL)
+	// 		to_chat(user, "The coil is as long as it will get.")
+	// 		return
+	// 	if((C.get_amount() + get_amount() <= MAXCOIL))
+	// 		to_chat(user, "You join the cable coils together.")
+	// 		return
+	// 	else
+	// 		to_chat(user, "You transfer [get_amount_transferred()] length\s of cable from one coil to the other.")
+	// 		return
 
-	if(istype(W, /obj/item/toy/crayon))
-		var/obj/item/toy/crayon/C = W
+	if(istype(used, /obj/item/toy/crayon))
+		var/obj/item/toy/crayon/C = used
 		cable_color(C.dye_color)
 
 ///////////////////////////////////////////////
@@ -394,7 +403,11 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe/cable_restrain
 /obj/item/stack/cable_coil/cyborg/update_icon_state()
 	return // icon_state should always be a full cable
 
-/obj/item/stack/cable_coil/cyborg/attack_self__legacy__attackchain(mob/user)
+/obj/item/stack/cable_coil/cyborg/activate_self(mob/user)
+	. = ..()
+	if(.)
+		return .
+
 	var/cablecolor = tgui_input_list(usr, "Pick a cable color.", "Cable Color", list("red","yellow","green","blue","pink","orange","cyan","white"))
 	cable_color(cablecolor)
 	update_icon()

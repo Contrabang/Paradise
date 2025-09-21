@@ -21,7 +21,7 @@ class AttackChainCall:
     var_name: str
     var_type: p | None
     call_name: str
-    source_info: Any
+    source_loc: Any
     legacy: bool
 
     def make_error_message(self):
@@ -29,10 +29,10 @@ class AttackChainCall:
 
     def format_error(self):
         if os.getenv("GITHUB_ACTIONS") == "true":
-            return f"::error file={self.source_info.file_path},line={self.source_info.line},title=Attack Chain::{self.source_info.file_path}:{self.source_info.line}: {RED}{self.make_error_message()}{NC}"
+            return f"::error file={self.source_loc.file_path},line={self.source_loc.line},title=Attack Chain::{self.source_loc.file_path}:{self.source_loc.line}: {RED}{self.make_error_message()}{NC}"
 
         else:
-            return f"{self.source_info.file_path}:{self.source_info.line}: {RED}{self.make_error_message()}{NC}"
+            return f"{self.source_loc.file_path}:{self.source_loc.line}: {RED}{self.make_error_message()}{NC}"
 
 
 def make_error_from_procdecl(proc_decl: ProcDecl, msg) -> str:
@@ -75,7 +75,7 @@ class AttackChainCallWalker:
 
         return None
 
-    def add_attack_call(self, var_name, chain_call, source_info, legacy):
+    def add_attack_call(self, var_name, chain_call, source_loc, legacy):
         var_type = self.get_var_type(var_name)
         CALLS[var_type].add(
             AttackChainCall(
@@ -83,17 +83,17 @@ class AttackChainCallWalker:
                 var_name,
                 self.get_var_type(var_name),
                 chain_call,
-                source_info,
+                source_loc,
                 legacy=legacy,
             )
         )
 
-    def visit_Var(self, node, source_info):
+    def visit_Var(self, node, source_loc):
         self.local_vars[str(node.name)] = node.declared_type
         if node.value:
-            self.visit_Expr(node.value, source_info)
+            self.visit_Expr(node.value, source_loc)
 
-    def visit_Expr(self, node, source_info):
+    def visit_Expr(self, node, source_loc):
         if node.kind == NodeKind.CALL:
             legacy = False
             record = False
@@ -106,11 +106,11 @@ class AttackChainCallWalker:
             if record and node.expr:
                 if node.expr.kind == NodeKind.IDENTIFIER:
                     self.add_attack_call(
-                        str(node.expr), node.name.name, source_info, legacy
+                        str(node.expr), node.name.name, source_loc, legacy
                     )
                 elif node.expr.kind == NodeKind.CONSTANT:
                     if not node.expr.constant.val:
-                        self.add_attack_call("src", node.name.name, source_info, legacy)
+                        self.add_attack_call("src", node.name.name, source_loc, legacy)
 
 
 # Ignored types will never be part of the attack chain.

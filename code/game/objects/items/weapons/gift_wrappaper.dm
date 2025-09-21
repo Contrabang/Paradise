@@ -135,5 +135,10 @@
 	max_amount = 25
 	resistance_flags = FLAMMABLE
 
-/obj/item/stack/wrapping_paper/attack_self__legacy__attackchain(mob/user)
+/obj/item/stack/wrapping_paper/Initialize(mapload, new_amount, merge)
+	. = ..()
+	RegisterSignal(src, COMSIG_ACTIVATE_SELF, TYPE_PROC_REF(/datum, signal_cancel_activate_self))
+
+/obj/item/stack/wrapping_paper/signal_cancel_activate_self(mob/user)
 	to_chat(user, "<span class='notice'>You need to use it on a package that has already been wrapped!</span>")
+	return ..()

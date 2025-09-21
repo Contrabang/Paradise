@@ -47,7 +47,12 @@ GLOBAL_LIST_INIT(marker_beacon_colors, list(
 /obj/item/stack/marker_beacon/update_icon_state()
 	icon_state = "[base_icon_state][lowertext(picked_color)]"
 
-/obj/item/stack/marker_beacon/attack_self__legacy__attackchain(mob/user)
+/obj/item/stack/marker_beacon/activate_self(mob/user)
+	. = ..()
+	if(.)
+		return
+
+	. = FINISH_ATTACK
 	if(!isturf(user.loc))
 		to_chat(user, "<span class='warning'>You need more space to place a [singular_name] here.</span>")
 		return

@@ -63,20 +63,24 @@ GLOBAL_LIST_INIT(glass_recipes, list (
 	. = ..()
 	recipes = GLOB.glass_recipes
 
-/obj/item/stack/sheet/glass/attackby__legacy__attackchain(obj/item/W, mob/user, params)
-	if(istype(W, /obj/item/stack/cable_coil))
-		var/obj/item/stack/cable_coil/CC = W
+/obj/item/stack/sheet/glass/item_interaction(mob/living/user, obj/item/used, list/modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(istype(used, /obj/item/stack/cable_coil))
+		var/obj/item/stack/cable_coil/CC = used
 		if(CC.get_amount() < 5)
 			to_chat(user, "<b>There is not enough wire in this coil. You need 5 lengths.</b>")
-			return
+			return FINISH_ATTACK
 		CC.use(5)
 		to_chat(user, "<span class='notice'>You attach wire to [src].</span>")
 		new /obj/item/stack/light_w(user.loc)
 		use(1)
-		return
+		return FINISH_ATTACK
 
-	if(istype(W, /obj/item/stack/rods))
-		var/obj/item/stack/rods/V  = W
+	if(istype(used, /obj/item/stack/rods))
+		var/obj/item/stack/rods/V  = used
 		var/obj/item/stack/sheet/rglass/RG = new (user.loc)
 		RG.add_fingerprint(user)
 		V.use(1)
@@ -86,9 +90,7 @@ GLOBAL_LIST_INIT(glass_recipes, list (
 		G.use(1)
 		if(!G && !RG && replace)
 			user.put_in_hands(RG)
-		return
-
-	return ..()
+		return FINISH_ATTACK
 
 //////////////////////////////
 // MARK: REINFORCED GLASS
@@ -184,10 +186,13 @@ GLOBAL_LIST_INIT(pglass_recipes, list (
 	. = ..()
 	recipes = GLOB.pglass_recipes
 
-/obj/item/stack/sheet/plasmaglass/attackby__legacy__attackchain(obj/item/W, mob/user, params)
-	..()
-	if(istype(W, /obj/item/stack/rods))
-		var/obj/item/stack/rods/V  = W
+/obj/item/stack/sheet/plasmaglass/item_interaction(mob/living/user, obj/item/used, list/modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(istype(used, /obj/item/stack/rods))
+		var/obj/item/stack/rods/V  = used
 		var/obj/item/stack/sheet/plasmarglass/RG = new (user.loc)
 		RG.add_fingerprint(user)
 		V.use(1)
@@ -197,8 +202,7 @@ GLOBAL_LIST_INIT(pglass_recipes, list (
 		G.use(1)
 		if(!G && !RG && replace)
 			user.put_in_hands(RG)
-	else
-		return ..()
+		return FINISH_ATTACK
 
 //////////////////////////////
 // MARK: REINFORCED PLASMA GLASS

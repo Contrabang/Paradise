@@ -31,10 +31,15 @@
 	. = ..()
 	scatter_atom()
 
-/obj/item/stack/ore/bluespace_crystal/attack_self__legacy__attackchain(mob/user)
+/obj/item/stack/ore/bluespace_crystal/activate_self(mob/user)
+	. = ..()
+	if(.)
+		return
+
 	if(use(1))
 		blink_mob(user)
 		user.visible_message("<span class='notice'>[user] crushes a [singular_name]!</span>")
+		return FINISH_ATTACK
 
 /obj/item/stack/ore/bluespace_crystal/proc/blink_mob(mob/living/L)
 	if(!is_teleport_allowed(L.z))

@@ -4,6 +4,8 @@
 	desc = "Something went wrong."
 	origin_tech = "biotech=3"
 	dynamic_icon_state = FALSE
+	// Determines if this type can be turned into hide
+	var/is_leather = TRUE
 
 /obj/item/stack/sheet/animalhide/human
 	name = "human skin"
@@ -186,9 +188,7 @@ GLOBAL_LIST_INIT(sinew_recipes, list (
 			/obj/item/clothing/head/hooded/explorer,
 			/obj/item/clothing/head/helmet/space/plasmaman/mining))
 
-/obj/item/stack/sheet/animalhide/goliath_hide/afterattack__legacy__attackchain(atom/target, mob/user, proximity_flag)
-	if(!proximity_flag)
-		return
+/obj/item/stack/sheet/animalhide/goliath_hide/interact_with_atom(atom/target, mob/living/user, list/modifiers)
 	if(is_type_in_typecache(target, goliath_platable_armor_typecache))
 		var/obj/item/clothing/C = target
 		var/datum/armor/current_armor = C.armor
@@ -237,10 +237,9 @@ GLOBAL_LIST_INIT(sinew_recipes, list (
 	singular_name = "armor plate"
 	flags = NOBLUDGEON
 	layer = MOB_LAYER
+	is_leather = FALSE
 
-/obj/item/stack/sheet/animalhide/armor_plate/afterattack__legacy__attackchain(atom/target, mob/user, proximity_flag)
-	if(!proximity_flag)
-		return
+/obj/item/stack/sheet/animalhide/armor_plate/interact_with_atom(atom/target, mob/living/user, list/modifiers)
 	if(istype(target, /obj/mecha/working/ripley))
 		var/obj/mecha/working/ripley/D = target
 		if(D.plates < PLATES_COVERED_FULL && !D.hides && !D.drake_hides)
@@ -256,9 +255,6 @@ GLOBAL_LIST_INIT(sinew_recipes, list (
 		else
 			to_chat(user, "<span class='warning'>You can't improve [D] any further!</span>")
 
-/obj/item/stack/sheet/animalhide/armor_plate/attackby__legacy__attackchain(obj/item/W, mob/user, params)
-	return // no steel leather for ya
-
 /obj/item/stack/sheet/animalhide/ashdrake
 	name = "ash drake hide"
 	desc = "The strong, scaled hide of an ash drake. Can be attached to the mech itself, greatly enhancing its protective characteristics. Unfortunately, only working class exosuits have notches for such armor."
@@ -268,9 +264,7 @@ GLOBAL_LIST_INIT(sinew_recipes, list (
 	layer = MOB_LAYER
 	dynamic_icon_state = TRUE
 
-/obj/item/stack/sheet/animalhide/ashdrake/afterattack__legacy__attackchain(atom/target, mob/user, proximity_flag)
-	if(!proximity_flag)
-		return
+/obj/item/stack/sheet/animalhide/ashdrake/interact_with_atom(atom/target, mob/living/user, list/modifiers)
 	if(istype(target, /obj/mecha/working/ripley))
 		var/obj/mecha/working/ripley/D = target
 		if(D.drake_hides < DRAKE_HIDES_COVERED_FULL && !D.hides && !D.plates)
@@ -290,10 +284,14 @@ GLOBAL_LIST_INIT(sinew_recipes, list (
 
 //Step one - dehairing.
 
-/obj/item/stack/sheet/animalhide/attackby__legacy__attackchain(obj/item/W, mob/user, params)
-	if(W.sharp)
+/obj/item/stack/sheet/animalhide/item_interaction(mob/living/user, obj/item/used, list/modifiers)
+	. = ..()
+	if(.)
+		return .
+
+	if(used.sharp && is_leather)
 		user.visible_message("[user] starts cutting hair off \the [src].", "<span class='notice'>You start cutting the hair off \the [src]...</span>", "<span class='italics'>You hear the sound of a knife rubbing against flesh.</span>")
-		if(do_after(user, 50 * W.toolspeed, target = src))
+		if(do_after(user, 50 * used.toolspeed, target = src))
 			to_chat(user, "<span class='notice'>You cut the hair from this [src.singular_name].</span>")
 			//Try locating an exisitng stack on the tile and add to there if possible
 			for(var/obj/item/stack/sheet/hairlesshide/HS in usr.loc)
@@ -305,8 +303,6 @@ GLOBAL_LIST_INIT(sinew_recipes, list (
 			var/obj/item/stack/sheet/hairlesshide/HS = new(usr.loc)
 			HS.amount = 1
 			src.use(1)
-	else
-		..()
 
 //Step two - washing (also handled by water reagent code and washing machine code)
 /obj/item/stack/sheet/hairlesshide/water_act(volume, temperature, source, method = REAGENT_TOUCH)

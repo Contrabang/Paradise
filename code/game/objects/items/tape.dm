@@ -12,9 +12,15 @@
 	..()
 	update_icon(UPDATE_ICON_STATE)
 
-/obj/item/stack/tape_roll/attack__legacy__attackchain(mob/living/carbon/human/M, mob/living/user)
-	if(!istype(M)) //What good is a duct tape mask if you are unable to speak?
-		return
+/obj/item/stack/tape_roll/pre_attack(atom/target, mob/living/user, params)
+	. = ..()
+	if(.)
+		return .
+	if(!ishuman(target))
+		return CONTINUE_ATTACK
+	var/mob/living/carbon/human/M = target
+
+	. = FINISH_ATTACK
 	if(M.wear_mask)
 		to_chat(user, "Remove [M.p_their()] mask first!")
 		return
